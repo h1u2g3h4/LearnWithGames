@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Math Quest — solve grade 4–6 challenges, earn rewards, and customize your hero."
+    />
+    <title>Math Quest — Style Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shape page-shape--one" aria-hidden="true"></div>
+    <div class="page-shape page-shape--two" aria-hidden="true"></div>
+
+    <header class="app-header">
+      <div class="header-inner">
+        <a class="brand" href="#" aria-label="Math Quest home">
+          <span class="brand-mark">Q</span>
+          <span class="brand-copy">
+            <strong>Math Quest</strong>
+            <small>Play. Learn. Level up.</small>
+          </span>
+        </a>
+
+        <div class="header-actions">
+          <div class="header-streak" aria-label="Daily streak">
+            <span>🔥</span>
+            <strong>Keep it going!</strong>
+          </div>
+          <button class="icon-button" id="soundButton" type="button" aria-label="Turn sound off">
+            <span id="soundIcon">♪</span>
+          </button>
+          <div class="coin-pill" aria-label="Your coin balance">
+            <span class="coin-icon"></span>
+            <strong id="coinBalance">0</strong>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <section class="world-section" aria-labelledby="world-heading">
+        <div class="section-kicker">
+          <span>YOUR ADVENTURE</span>
+          <span class="section-kicker__line"></span>
+        </div>
+        <div class="world-heading-row">
+          <div>
+            <h1 id="world-heading">Choose your world</h1>
+            <p>Every world turns math into a new kind of adventure.</p>
+          </div>
+          <span class="world-count">1 OF 5 OPEN</span>
+        </div>
+
+        <div class="world-tabs" aria-label="Game worlds">
+          <button class="world-tab world-tab--math is-active" type="button" aria-pressed="true">
+            <span class="world-tab__icon">÷×</span>
+            <span><strong>Math Quest</strong><small>Numbers &amp; logic</small></span>
+            <span class="world-tab__status">PLAY</span>
+          </button>
+          <button class="world-tab world-tab--speed" type="button" disabled>
+            <span class="world-tab__icon">S</span>
+            <span><strong>Speedway</strong><small>Speed &amp; distance</small></span>
+            <span class="world-tab__lock">SOON</span>
+          </button>
+          <button class="world-tab world-tab--sky" type="button" disabled>
+            <span class="world-tab__icon">K</span>
+            <span><strong>Skyward</strong><small>Time &amp; navigation</small></span>
+            <span class="world-tab__lock">SOON</span>
+          </button>
+          <button class="world-tab world-tab--space" type="button" disabled>
+            <span class="world-tab__icon">C</span>
+            <span><strong>Cosmos</strong><small>Big numbers &amp; data</small></span>
+            <span class="world-tab__lock">SOON</span>
+          </button>
+          <button class="world-tab world-tab--build" type="button" disabled>
+            <span class="world-tab__icon">B</span>
+            <span><strong>Builders</strong><small>Geometry &amp; area</small></span>
+            <span class="world-tab__lock">SOON</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="mission-banner" aria-label="Current mission">
+        <div class="mission-banner__icon">÷×</div>
+        <div class="mission-banner__copy">
+          <span>CURRENT MISSION</span>
+          <strong id="missionTitle">Power up Nova with 10 math challenges</strong>
+          <small>Every correct answer earns coins, XP, and new styles.</small>
+        </div>
+        <div class="mission-banner__reward">
+          <span>QUEST REWARD</span>
+          <strong><i class="coin-icon coin-icon--small"></i> +100</strong>
+        </div>
+      </section>
+
+      <div class="game-layout">
+        <section class="hero-card" aria-labelledby="hero-title">
+          <div class="hero-card__header">
+            <div>
+              <p class="eyebrow">YOUR MATH HERO</p>
+              <div class="hero-name-display">
+                <h2 id="hero-title">Nova</h2>
+                <button class="name-edit-button" id="editNameButton" type="button" aria-label="Change hero name">
+                  ✎
+                </button>
+              </div>
+              <form class="hero-name-editor" id="heroNameEditor" hidden>
+                <label class="sr-only" for="heroNameInput">Hero name</label>
+                <input
+                  id="heroNameInput"
+                  type="text"
+                  maxlength="12"
+                  autocomplete="off"
+                  spellcheck="false"
+                  aria-describedby="nameError"
+                />
+                <button class="name-save-button" type="submit">Save</button>
+                <button class="name-cancel-button" id="cancelNameButton" type="button" aria-label="Cancel name change">×</button>
+                <span class="name-error" id="nameError" role="status"></span>
+              </form>
+            </div>
+            <div class="hero-header-actions">
+              <span class="level-badge" id="levelBadge">LVL 1</span>
+              <div class="avatar-switch" role="group" aria-label="Choose your character">
+                <button class="avatar-option is-active" data-avatar="female" type="button" aria-pressed="true">
+                  Girl
+                </button>
+                <button class="avatar-option" data-avatar="male" type="button" aria-pressed="false">
+                  Boy
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="character-stage">
+            <div class="stage-grid" aria-hidden="true"></div>
+            <span class="stage-spark stage-spark--one" aria-hidden="true">✦</span>
+            <span class="stage-spark stage-spark--two" aria-hidden="true">✦</span>
+            <span class="stage-spark stage-spark--three" aria-hidden="true">•</span>
+            <div class="character-realistic" id="character" aria-label="Your styled character">
+              <img
+                class="character-image"
+                id="characterImage"
+                src="assets/characters/female.png"
+                alt="Nova, your math hero"
+              />
+              <div class="realistic-outfit-tint" id="characterOutfit" aria-hidden="true">
+                <span class="outfit-mark" id="outfitMark">★</span>
+              </div>
+              <div class="realistic-accessory" id="characterAccessory" aria-hidden="true"></div>
+              <div class="realistic-shoes" id="characterShoes" aria-hidden="true"></div>
+              <div id="characterHair" hidden></div>
+            </div>
+            <div class="stage-shadow" aria-hidden="true"></div>
+          </div>
+
+          <div class="progress-card">
+            <div class="progress-card__labels">
+              <span>LEVEL PROGRESS</span>
+              <strong id="xpLabel">0 / 50 XP</strong>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="xpFill"></div>
+            </div>
+          </div>
+
+          <button class="wardrobe-button" id="wardrobeButton" type="button">
+            <span>✦</span> Open Style Shop
+          </button>
+        </section>
+
+        <section class="challenge-panel" aria-labelledby="challenge-title">
+          <div class="challenge-header">
+            <div>
+              <p class="eyebrow eyebrow--indigo">MATH QUEST</p>
+              <h2 id="challenge-title">Ready for a brain boost?</h2>
+            </div>
+            <label class="grade-picker">
+              <span>CHALLENGE LEVEL</span>
+              <select id="gradeSelect">
+                <option value="4">Grade 4</option>
+                <option value="5">Grade 5</option>
+                <option value="6">Grade 6</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="quest-stats">
+            <div class="quest-stat quest-stat--streak">
+              <span class="quest-stat__icon">🔥</span>
+              <span><strong id="streakCount">0</strong><small>STREAK</small></span>
+            </div>
+            <div class="quest-stat quest-stat--solved">
+              <span class="quest-stat__icon">✓</span>
+              <span><strong id="correctCount">0</strong><small>SOLVED</small></span>
+            </div>
+            <div class="quest-stat quest-stat--coins">
+              <span class="coin-icon"></span>
+              <span><strong id="sessionCoins">0</strong><small>EARNED</small></span>
+            </div>
+          </div>
+
+          <div class="question-card" id="questionCard">
+            <div class="question-card__meta">
+              <span id="topicLabel">Multiplication</span>
+              <span class="reward-label"><i class="coin-icon coin-icon--tiny"></i> +<b id="questionReward">10</b></span>
+            </div>
+            <p class="question-prompt" id="questionPrompt">What is 7 × 8?</p>
+            <div class="answer-grid" id="answerGrid"></div>
+            <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+            <button class="next-button" id="nextButton" type="button" hidden>
+              Next challenge <span>→</span>
+            </button>
+          </div>
+
+          <div class="tip-card">
+            <span class="tip-card__bulb">💡</span>
+            <p>
+              <strong>Quest hint</strong>
+              <span id="tipText">Break a big problem into smaller, friendlier parts.</span>
+            </p>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <div class="shop-overlay" id="shopOverlay" hidden>
+      <section class="shop-modal" role="dialog" aria-modal="true" aria-labelledby="shopTitle">
+        <div class="shop-header">
+          <div>
+            <p class="eyebrow eyebrow--indigo" id="shopOwnerLabel">NOVA'S COLLECTION</p>
+            <h2 id="shopTitle">Style Shop</h2>
+          </div>
+          <div class="shop-header__right">
+            <div class="coin-pill coin-pill--small">
+              <span class="coin-icon"></span>
+              <strong id="shopCoinBalance">0</strong>
+            </div>
+            <button class="close-button" id="closeShopButton" type="button" aria-label="Close shop">×</button>
+          </div>
+        </div>
+        <div class="shop-tabs" id="shopTabs" role="tablist" aria-label="Shop categories">
+          <button class="shop-tab is-active" data-category="outfit" type="button">Outfits</button>
+          <button class="shop-tab" data-category="hair" type="button">Hair</button>
+          <button class="shop-tab" data-category="accessory" type="button">Extras</button>
+          <button class="shop-tab" data-category="shoes" type="button">Shoes</button>
+        </div>
+        <div class="shop-grid" id="shopGrid"></div>
+      </section>
+    </div>
+
+    <div class="celebration" id="celebration" aria-hidden="true"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
