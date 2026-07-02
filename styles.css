@@ -1238,6 +1238,76 @@ h2 {
   box-shadow: 0 0 18px #a855f7;
 }
 
+.rocket-exhaust {
+  position: absolute;
+  z-index: 3;
+  bottom: calc(48px + var(--world-altitude, 0px));
+  left: calc(1% + var(--world-horizontal, 0%));
+  width: min(180px, 34%);
+  height: 24px;
+  border-radius: 999px;
+  opacity: 0.25;
+  background: linear-gradient(90deg, transparent, rgb(168 85 247 / 55%) 55%, #67e8f9 88%, #fff);
+  filter: blur(5px);
+  transform: rotate(-11deg) translateX(-58%);
+  transform-origin: right center;
+  pointer-events: none;
+}
+
+.space-speed-lines {
+  position: absolute;
+  z-index: 3;
+  inset: -25%;
+  opacity: 0;
+  background: repeating-linear-gradient(
+    102deg,
+    transparent 0 34px,
+    rgb(255 255 255 / 58%) 36px,
+    transparent 39px 78px
+  );
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.cosmos-boost-label {
+  position: absolute;
+  z-index: 6;
+  top: 18px;
+  right: 18px;
+  padding: 7px 12px;
+  border: 1px solid rgb(255 255 255 / 55%);
+  border-radius: 999px;
+  opacity: 0;
+  color: white;
+  font-family: "Fredoka", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.09em;
+  background: linear-gradient(135deg, rgb(124 58 237 / 88%), rgb(6 182 212 / 88%));
+  box-shadow: 0 0 22px rgb(103 232 249 / 48%);
+  transform: translateY(-8px) scale(0.8);
+  pointer-events: none;
+}
+
+.world-game-card[data-world="cosmos"].is-advancing .scene-cosmos .world-player-image {
+  animation: cosmos-rocket-boost 1.1s cubic-bezier(.2, .72, .22, 1) both;
+}
+
+.world-game-card[data-world="cosmos"].is-advancing .warp-trail {
+  animation: cosmos-trail-burst 1.05s ease-out both;
+}
+
+.world-game-card[data-world="cosmos"].is-advancing .rocket-exhaust {
+  animation: cosmos-engine-flare 1.05s ease-out both;
+}
+
+.world-game-card[data-world="cosmos"].is-advancing .space-speed-lines {
+  animation: cosmos-space-rush 0.9s ease-out both;
+}
+
+.world-game-card[data-world="cosmos"].is-advancing .cosmos-boost-label {
+  animation: cosmos-boost-label 1.05s ease-out both;
+}
+
 .scene-builders .building-stack {
   z-index: 3;
   right: 9%;
@@ -2944,6 +3014,41 @@ h2 {
     opacity: 0;
     transform: translate3d(var(--drift), 105vh, 0) rotate(720deg);
   }
+}
+
+@keyframes cosmos-rocket-boost {
+  0% { transform: translate3d(0, 0, 0) rotate(-7deg) scale(1); }
+  12% { transform: translate3d(-5px, 4px, 0) rotate(-9deg) scale(0.98); }
+  35% { transform: translate3d(16px, -13px, 0) rotate(-4deg) scale(1.09); }
+  58% { transform: translate3d(10px, -8px, 0) rotate(-5deg) scale(1.06); }
+  78% { transform: translate3d(-2px, 2px, 0) rotate(-8deg) scale(1.02); }
+  100% { transform: translate3d(0, 0, 0) rotate(-7deg) scale(1); }
+}
+
+@keyframes cosmos-trail-burst {
+  0% { opacity: 0.25; transform: rotate(-12deg) scaleX(0.45); }
+  20% { opacity: 1; transform: rotate(-12deg) scaleX(1.25); }
+  70% { opacity: 0.82; transform: rotate(-12deg) scaleX(1); }
+  100% { opacity: 0.4; transform: rotate(-12deg) scaleX(0.72); }
+}
+
+@keyframes cosmos-engine-flare {
+  0% { opacity: 0.2; transform: rotate(-11deg) translateX(-58%) scaleX(0.5); }
+  16% { opacity: 1; transform: rotate(-11deg) translateX(-58%) scaleX(1.35); }
+  48% { opacity: 0.82; transform: rotate(-11deg) translateX(-58%) scaleX(1.05); }
+  100% { opacity: 0.25; transform: rotate(-11deg) translateX(-58%) scaleX(0.62); }
+}
+
+@keyframes cosmos-space-rush {
+  0% { opacity: 0; transform: translate3d(-18%, 8%, 0) scaleX(0.7); }
+  20% { opacity: 0.72; }
+  100% { opacity: 0; transform: translate3d(22%, -8%, 0) scaleX(1.35); }
+}
+
+@keyframes cosmos-boost-label {
+  0% { opacity: 0; transform: translateY(-8px) scale(0.8); }
+  18%, 62% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-6px) scale(0.92); }
 }
 
 @media (max-width: 1080px) {

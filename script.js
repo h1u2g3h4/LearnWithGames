@@ -116,6 +116,9 @@ const WORLD_CONFIG = {
     completionBonus: 35,
     scene: `
       <span class="warp-trail" aria-hidden="true"></span>
+      <span class="rocket-exhaust" aria-hidden="true"></span>
+      <span class="space-speed-lines" aria-hidden="true"></span>
+      <span class="cosmos-boost-label" aria-hidden="true">WARP BOOST!</span>
       <img class="world-player world-player-image" src="assets/worlds/cosmos-rocket.png" alt="White and violet exploration rocket" />
     `,
   },
@@ -2174,9 +2177,14 @@ function advanceWorldGame() {
 
 function animateWorldAdvance() {
   if (state.activeWorld === "math") return;
+  const worldId = state.activeWorld;
+  const animationDuration = worldId === "cosmos" ? 1180 : 680;
   elements.worldGameCard.classList.remove("is-advancing");
-  requestAnimationFrame(() => elements.worldGameCard.classList.add("is-advancing"));
-  window.setTimeout(() => elements.worldGameCard.classList.remove("is-advancing"), 520);
+  requestAnimationFrame(() => {
+    elements.worldGameCard.classList.add("is-advancing");
+    if (worldId === "cosmos") playCosmosBoostSound();
+  });
+  window.setTimeout(() => elements.worldGameCard.classList.remove("is-advancing"), animationDuration);
 }
 
 function nextQuestion() {
@@ -2425,6 +2433,7 @@ function buyOrEquip(item) {
 function playTone(correct) {
   if (!state.sound) return;
   audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+  if (audioContext.state === "suspended") audioContext.resume();
   const oscillator = audioContext.createOscillator();
   const gain = audioContext.createGain();
   oscillator.connect(gain);
@@ -2438,6 +2447,56 @@ function playTone(correct) {
   gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.2);
   oscillator.start();
   oscillator.stop(audioContext.currentTime + 0.2);
+}
+
+function playCosmosBoostSound() {
+  if (!state.sound) return;
+  audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+  if (audioContext.state === "suspended") audioContext.resume();
+
+  const now = audioContext.currentTime;
+  const engine = audioContext.createOscillator();
+  const engineFilter = audioContext.createBiquadFilter();
+  const engineGain = audioContext.createGain();
+
+  engine.type = "sawtooth";
+  engine.frequency.setValueAtTime(72, now);
+  engine.frequency.exponentialRampToValueAtTime(245, now + 0.72);
+  engineFilter.type = "lowpass";
+  engineFilter.frequency.setValueAtTime(480, now);
+  engineFilter.frequency.exponentialRampToValueAtTime(3200, now + 0.62);
+  engineGain.gain.setValueAtTime(0.001, now);
+  engineGain.gain.exponentialRampToValueAtTime(0.055, now + 0.08);
+  engineGain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+  engine.connect(engineFilter);
+  engineFilter.connect(engineGain);
+  engineGain.connect(audioContext.destination);
+  engine.start(now);
+  engine.stop(now + 0.92);
+
+  const noiseLength = Math.floor(audioContext.sampleRate * 0.72);
+  const noiseBuffer = audioContext.createBuffer(1, noiseLength, audioContext.sampleRate);
+  const noiseData = noiseBuffer.getChannelData(0);
+  for (let index = 0; index < noiseLength; index += 1) {
+    noiseData[index] = (Math.random() * 2 - 1) * (1 - index / noiseLength);
+  }
+
+  const noise = audioContext.createBufferSource();
+  const noiseFilter = audioContext.createBiquadFilter();
+  const noiseGain = audioContext.createGain();
+  noise.buffer = noiseBuffer;
+  noiseFilter.type = "bandpass";
+  noiseFilter.frequency.setValueAtTime(900, now);
+  noiseFilter.frequency.exponentialRampToValueAtTime(2600, now + 0.55);
+  noiseFilter.Q.value = 0.7;
+  noiseGain.gain.setValueAtTime(0.001, now);
+  noiseGain.gain.exponentialRampToValueAtTime(0.038, now + 0.06);
+  noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+  noise.connect(noiseFilter);
+  noiseFilter.connect(noiseGain);
+  noiseGain.connect(audioContext.destination);
+  noise.start(now);
+  noise.stop(now + 0.72);
 }
 
 function playPurchaseTone() {
