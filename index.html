@@ -20,7 +20,35 @@
     <div class="page-shape page-shape--one" aria-hidden="true"></div>
     <div class="page-shape page-shape--two" aria-hidden="true"></div>
 
-    <header class="app-header">
+    <section class="auth-screen" id="authScreen" aria-labelledby="loginTitle">
+      <div class="auth-card">
+        <div class="auth-brand">
+          <span class="brand-mark">Q</span>
+          <div>
+            <strong>Math Quest</strong>
+            <small>Learn with games</small>
+          </div>
+        </div>
+        <p class="eyebrow eyebrow--indigo">WELCOME BACK</p>
+        <h1 id="loginTitle">Sign in to play</h1>
+        <p class="auth-intro">Your teacher sets the right grade and term. Your progress and rewards stay with your account.</p>
+        <form class="login-form" id="loginForm">
+          <label>
+            <span>Username</span>
+            <input id="loginUsername" type="text" autocomplete="username" required />
+          </label>
+          <label>
+            <span>Password</span>
+            <input id="loginPassword" type="password" autocomplete="current-password" required />
+          </label>
+          <p class="auth-error" id="loginError" role="alert"></p>
+          <button class="auth-submit" type="submit">Sign in <span>→</span></button>
+        </form>
+        <p class="auth-note"><strong>Starter administrator:</strong> Hugh Kang</p>
+      </div>
+    </section>
+
+    <header class="app-header" hidden>
       <div class="header-inner">
         <a class="brand" href="#" aria-label="Math Quest home">
           <span class="brand-mark">Q</span>
@@ -42,11 +70,20 @@
             <span class="coin-icon"></span>
             <strong id="coinBalance">0</strong>
           </div>
+          <div class="user-chip" id="userChip" hidden>
+            <span class="user-avatar" id="userAvatar">HK</span>
+            <span class="user-chip__copy">
+              <strong id="currentUserName">Hugh Kang</strong>
+              <small id="currentUserRole">Administrator</small>
+            </span>
+          </div>
+          <button class="header-text-button" id="myPageButton" type="button" hidden>My Page</button>
+          <button class="logout-button" id="logoutButton" type="button" hidden aria-label="Sign out">↪</button>
         </div>
       </div>
     </header>
 
-    <main class="app-shell">
+    <main class="app-shell" hidden>
       <section class="world-section" aria-labelledby="world-heading">
         <div class="section-kicker">
           <span>YOUR ADVENTURE</span>
@@ -184,14 +221,29 @@
               <p class="eyebrow eyebrow--indigo">MATH QUEST</p>
               <h2 id="challenge-title">Ready for a brain boost?</h2>
             </div>
-            <label class="grade-picker">
-              <span>CHALLENGE LEVEL</span>
-              <select id="gradeSelect">
-                <option value="4">Grade 4</option>
-                <option value="5">Grade 5</option>
-                <option value="6">Grade 6</option>
-              </select>
-            </label>
+            <div class="curriculum-pickers">
+              <label class="grade-picker">
+                <span>GRADE LEVEL</span>
+                <select id="gradeSelect">
+                  <option value="4">Grade 4</option>
+                  <option value="5">Grade 5</option>
+                  <option value="6">Grade 6</option>
+                </select>
+              </label>
+              <label class="grade-picker">
+                <span>TERM</span>
+                <select id="termSelect">
+                  <option value="1">Term 1</option>
+                  <option value="2">Term 2</option>
+                  <option value="3">Term 3</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div class="curriculum-strip">
+            <span class="curriculum-strip__badge">BC</span>
+            <span><strong id="curriculumTitle">Grade 4 · Term 1</strong><small id="curriculumTopics">Number sense, addition, and multiplication foundations</small></span>
           </div>
 
           <div class="quest-stats">
@@ -255,6 +307,26 @@
           <button class="shop-tab" data-category="shoes" type="button">Shoes</button>
         </div>
         <div class="shop-grid" id="shopGrid"></div>
+      </section>
+    </div>
+
+    <div class="admin-overlay" id="adminOverlay" hidden>
+      <section class="admin-modal" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+        <header class="admin-header">
+          <div>
+            <p class="eyebrow eyebrow--indigo">LEARNING CONTROL CENTRE</p>
+            <h2 id="adminTitle">My Page</h2>
+            <p>Manage people, groups, curriculum levels, and access.</p>
+          </div>
+          <button class="close-button" id="closeAdminButton" type="button" aria-label="Close My Page">×</button>
+        </header>
+        <nav class="admin-tabs" id="adminTabs" aria-label="My Page sections">
+          <button class="admin-tab is-active" data-admin-tab="people" type="button">People</button>
+          <button class="admin-tab" data-admin-tab="groups" type="button">Groups</button>
+          <button class="admin-tab" data-admin-tab="roles" type="button">Roles</button>
+          <button class="admin-tab" data-admin-tab="curriculum" type="button">Curriculum</button>
+        </nav>
+        <div class="admin-content" id="adminContent"></div>
       </section>
     </div>
 
