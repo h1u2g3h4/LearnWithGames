@@ -544,6 +544,30 @@ h2 {
   box-shadow: 0 9px 22px -15px rgba(79, 70, 229, 0.65);
 }
 
+.world-tab--speed.is-active {
+  border-color: #ef4444;
+  background: #fff1f2;
+  box-shadow: 0 9px 22px -15px rgb(239 68 68 / 68%);
+}
+
+.world-tab--sky.is-active {
+  border-color: #06b6d4;
+  background: #ecfeff;
+  box-shadow: 0 9px 22px -15px rgb(6 182 212 / 68%);
+}
+
+.world-tab--space.is-active {
+  border-color: #7c3aed;
+  background: #f5f3ff;
+  box-shadow: 0 9px 22px -15px rgb(124 58 237 / 68%);
+}
+
+.world-tab--build.is-active {
+  border-color: #f59e0b;
+  background: #fffbeb;
+  box-shadow: 0 9px 22px -15px rgb(245 158 11 / 68%);
+}
+
 .world-tab:disabled {
   color: var(--muted);
   cursor: not-allowed;
@@ -617,6 +641,22 @@ h2 {
   color: var(--indigo);
 }
 
+.world-tab--speed .world-tab__status {
+  color: #dc2626;
+}
+
+.world-tab--sky .world-tab__status {
+  color: #0891b2;
+}
+
+.world-tab--space .world-tab__status {
+  color: #7c3aed;
+}
+
+.world-tab--build .world-tab__status {
+  color: #d97706;
+}
+
 .world-tab__lock {
   color: var(--muted);
 }
@@ -632,6 +672,26 @@ h2 {
   color: #fff;
   background: linear-gradient(125deg, var(--indigo), #675de9 62%, #6955cf);
   box-shadow: 0 20px 38px -22px rgba(79, 70, 229, 0.8);
+}
+
+.mission-banner[data-world="speedway"] {
+  background: linear-gradient(125deg, #dc2626, #ef4444 58%, #f97316);
+  box-shadow: 0 20px 38px -22px rgb(220 38 38 / 80%);
+}
+
+.mission-banner[data-world="skyward"] {
+  background: linear-gradient(125deg, #0284c7, #06b6d4 58%, #22d3ee);
+  box-shadow: 0 20px 38px -22px rgb(8 145 178 / 80%);
+}
+
+.mission-banner[data-world="cosmos"] {
+  background: linear-gradient(125deg, #312e81, #6d28d9 58%, #9333ea);
+  box-shadow: 0 20px 38px -22px rgb(109 40 217 / 80%);
+}
+
+.mission-banner[data-world="builders"] {
+  background: linear-gradient(125deg, #b45309, #d97706 58%, #f59e0b);
+  box-shadow: 0 20px 38px -22px rgb(217 119 6 / 80%);
 }
 
 .mission-banner__icon {
@@ -685,6 +745,371 @@ h2 {
 .mission-banner__reward strong {
   font-family: "Fredoka", sans-serif;
   font-size: 19px;
+}
+
+.world-game-card {
+  margin: 0 0 22px;
+  padding: 22px;
+  overflow: hidden;
+  border: 1px solid #dfe3ef;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: var(--shadow-md);
+}
+
+.world-game-card[hidden] {
+  display: none;
+}
+
+.world-game-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 22px;
+  margin-bottom: 16px;
+}
+
+.world-game-card__header h2 {
+  margin: 2px 0 3px;
+  font-size: 26px;
+}
+
+.world-game-card__header > div > p:last-child {
+  margin: 0;
+  color: var(--body);
+  font-size: 12px;
+}
+
+.world-level-badge {
+  display: grid;
+  flex: none;
+  place-items: center;
+  min-width: 68px;
+  padding: 9px 13px;
+  border-radius: 14px;
+  color: #fff;
+  background: var(--world-accent, var(--indigo));
+}
+
+.world-level-badge span,
+.world-level-badge strong {
+  display: block;
+}
+
+.world-level-badge span {
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.world-level-badge strong {
+  font-family: "Fredoka", sans-serif;
+  font-size: 23px;
+  line-height: 1;
+}
+
+.world-game-scene {
+  position: relative;
+  min-height: 175px;
+  overflow: hidden;
+  border-radius: 18px;
+  isolation: isolate;
+}
+
+.world-game-scene::after {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  border: 1px solid rgb(255 255 255 / 34%);
+  border-radius: inherit;
+  content: "";
+  pointer-events: none;
+}
+
+.world-player {
+  position: absolute;
+  z-index: 4;
+  font-size: 48px;
+  line-height: 1;
+  filter: drop-shadow(0 8px 5px rgb(26 27 60 / 22%));
+  transition: left 0.65s cubic-bezier(.2, .85, .25, 1), bottom 0.65s cubic-bezier(.2, .85, .25, 1), transform 0.3s ease;
+}
+
+.world-game-card.is-advancing .world-player {
+  transform: translateY(-8px) rotate(-3deg) scale(1.08);
+}
+
+.scene-speedway {
+  background: linear-gradient(#bde7ff 0 56%, #91cc68 56% 100%);
+}
+
+.scene-speedway .scene-hills {
+  position: absolute;
+  inset: 37% 0 auto;
+  height: 48px;
+  background:
+    radial-gradient(ellipse at 10% 100%, #5dab51 0 48%, transparent 50%),
+    radial-gradient(ellipse at 40% 100%, #78bb58 0 48%, transparent 50%),
+    radial-gradient(ellipse at 72% 100%, #5dab51 0 48%, transparent 50%),
+    radial-gradient(ellipse at 100% 100%, #78bb58 0 48%, transparent 50%);
+}
+
+.speedway-road {
+  position: absolute;
+  inset: auto -4% 0;
+  height: 74px;
+  background: #343746;
+  transform: perspective(180px) rotateX(3deg);
+}
+
+.speedway-road::after {
+  position: absolute;
+  top: 34px;
+  right: 0;
+  left: 0;
+  height: 5px;
+  background: repeating-linear-gradient(90deg, #fff 0 44px, transparent 44px 78px);
+  content: "";
+}
+
+.scene-speedway .world-player {
+  bottom: 32px;
+  left: calc(3% + var(--world-horizontal, 0%));
+}
+
+.finish-flag {
+  position: absolute;
+  z-index: 3;
+  right: 4%;
+  bottom: 49px;
+  font-size: 42px;
+}
+
+.scene-skyward {
+  background: linear-gradient(180deg, #52c4ec 0%, #c7f0ff 68%, #eaffff 100%);
+}
+
+.cloud {
+  position: absolute;
+  z-index: 1;
+  color: rgb(255 255 255 / 92%);
+  font-size: 55px;
+  filter: drop-shadow(0 4px 4px rgb(15 88 130 / 8%));
+}
+
+.cloud--one {
+  top: 15px;
+  left: 8%;
+}
+
+.cloud--two {
+  right: 12%;
+  bottom: 5px;
+  font-size: 72px;
+}
+
+.cloud--three {
+  top: 64px;
+  left: 48%;
+  font-size: 38px;
+}
+
+.scene-skyward .world-player {
+  bottom: calc(13px + var(--world-altitude, 0px));
+  left: calc(5% + var(--world-horizontal, 0%));
+}
+
+.sky-gate {
+  position: absolute;
+  top: 14px;
+  right: 5%;
+  font-size: 43px;
+}
+
+.scene-cosmos {
+  background:
+    radial-gradient(circle at 15% 20%, rgb(255 255 255 / 88%) 0 1px, transparent 2px),
+    radial-gradient(circle at 70% 25%, rgb(255 255 255 / 75%) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 32% 72%, rgb(255 255 255 / 70%) 0 1px, transparent 2px),
+    radial-gradient(circle at 88% 76%, rgb(255 255 255 / 85%) 0 1.5px, transparent 2.5px),
+    linear-gradient(135deg, #11132f, #302060 55%, #121938);
+  background-size: 90px 70px, 130px 90px, 110px 100px, 150px 120px, auto;
+}
+
+.planet {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  box-shadow: inset -8px -7px 0 rgb(0 0 0 / 13%), 0 0 22px rgb(255 255 255 / 10%);
+}
+
+.planet--one {
+  top: 22px;
+  left: 15%;
+  width: 42px;
+  height: 42px;
+  background: #fb7185;
+}
+
+.planet--two {
+  right: 8%;
+  bottom: 20px;
+  width: 70px;
+  height: 70px;
+  background: #60a5fa;
+}
+
+.planet--two::after {
+  position: absolute;
+  width: 94px;
+  height: 24px;
+  border: 5px solid #fbbf24;
+  border-radius: 50%;
+  content: "";
+  transform: rotate(-16deg);
+}
+
+.scene-cosmos .world-player {
+  bottom: calc(35px + var(--world-altitude, 0px));
+  left: calc(4% + var(--world-horizontal, 0%));
+}
+
+.cosmos-target {
+  position: absolute;
+  top: 17px;
+  right: 13%;
+  color: #fde68a;
+  font-size: 34px;
+}
+
+.scene-builders {
+  background: linear-gradient(#a6ddff 0 68%, #cfaa73 68% 100%);
+}
+
+.scene-builders .scene-sun {
+  position: absolute;
+  top: 18px;
+  right: 7%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fde047;
+  box-shadow: 0 0 24px #fde047;
+}
+
+.builder-crane {
+  position: absolute;
+  z-index: 3;
+  top: 10px;
+  left: 7%;
+  color: #d97706;
+  font-size: 72px;
+}
+
+.building-stack {
+  position: absolute;
+  z-index: 2;
+  right: 22%;
+  bottom: 17px;
+  display: grid;
+  grid-template-columns: repeat(2, 48px);
+  align-content: end;
+  gap: 4px;
+}
+
+.building-block {
+  display: grid;
+  place-items: center;
+  height: 27px;
+  border: 2px solid #c76919;
+  border-radius: 3px;
+  opacity: 0.16;
+  color: #7c2d12;
+  font-size: 12px;
+  background: #fb923c;
+  transform: translateY(-8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.building-block.is-built {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scene-builders .world-player {
+  bottom: 15px;
+  left: calc(12% + var(--world-horizontal, 0%));
+  font-size: 43px;
+}
+
+.world-game-progress {
+  margin-top: 15px;
+}
+
+.world-game-progress__labels,
+.world-game-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.world-game-progress__labels {
+  margin-bottom: 7px;
+  font-size: 10px;
+}
+
+.world-game-progress__labels span {
+  color: var(--world-accent, var(--indigo));
+  font-weight: 900;
+}
+
+.world-game-progress__track {
+  height: 11px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: #e8eaf2;
+}
+
+.world-game-progress__track span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--world-accent, var(--indigo)), var(--world-accent-light, var(--cyan)));
+  transition: width 0.65s cubic-bezier(.2, .85, .25, 1);
+}
+
+.world-game-footer {
+  margin-top: 10px;
+  color: var(--body);
+  font-size: 10px;
+}
+
+.world-game-footer strong {
+  color: var(--world-accent, var(--indigo));
+}
+
+.world-game-card[data-world="speedway"] {
+  --world-accent: #ef4444;
+  --world-accent-light: #fb923c;
+}
+
+.world-game-card[data-world="skyward"] {
+  --world-accent: #0891b2;
+  --world-accent-light: #22d3ee;
+}
+
+.world-game-card[data-world="cosmos"] {
+  --world-accent: #7c3aed;
+  --world-accent-light: #c084fc;
+}
+
+.world-game-card[data-world="builders"] {
+  --world-accent: #d97706;
+  --world-accent-light: #fbbf24;
 }
 
 .game-layout {
@@ -2387,6 +2812,10 @@ h2 {
     display: none;
   }
 
+  .world-game-scene {
+    min-height: 160px;
+  }
+
   .game-layout {
     grid-template-columns: 1fr;
   }
@@ -2526,6 +2955,46 @@ h2 {
 
   .mission-banner__copy small {
     display: none;
+  }
+
+  .world-game-card {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .world-game-card__header {
+    gap: 12px;
+  }
+
+  .world-game-card__header h2 {
+    font-size: 22px;
+  }
+
+  .world-game-card__header > div > p:last-child {
+    font-size: 10px;
+  }
+
+  .world-level-badge {
+    min-width: 58px;
+    padding: 8px 10px;
+  }
+
+  .world-game-scene {
+    min-height: 145px;
+  }
+
+  .world-game-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .world-player {
+    font-size: 40px;
+  }
+
+  .building-stack {
+    right: 8%;
   }
 
   .hero-card {

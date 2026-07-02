@@ -94,48 +94,76 @@
             <h1 id="world-heading">Choose your world</h1>
             <p>Every world turns math into a new kind of adventure.</p>
           </div>
-          <span class="world-count">1 OF 5 OPEN</span>
+          <span class="world-count" id="worldCount">5 OF 5 OPEN</span>
         </div>
 
         <div class="world-tabs" aria-label="Game worlds">
-          <button class="world-tab world-tab--math is-active" type="button" aria-pressed="true">
+          <button class="world-tab world-tab--math is-active" data-world="math" type="button" aria-pressed="true">
             <span class="world-tab__icon">÷×</span>
             <span><strong>Math Quest</strong><small>Numbers &amp; logic</small></span>
             <span class="world-tab__status">PLAY</span>
           </button>
-          <button class="world-tab world-tab--speed" type="button" disabled>
+          <button class="world-tab world-tab--speed" data-world="speedway" type="button" aria-pressed="false">
             <span class="world-tab__icon">S</span>
             <span><strong>Speedway</strong><small>Speed &amp; distance</small></span>
-            <span class="world-tab__lock">SOON</span>
+            <span class="world-tab__status">PLAY</span>
           </button>
-          <button class="world-tab world-tab--sky" type="button" disabled>
+          <button class="world-tab world-tab--sky" data-world="skyward" type="button" aria-pressed="false">
             <span class="world-tab__icon">K</span>
             <span><strong>Skyward</strong><small>Time &amp; navigation</small></span>
-            <span class="world-tab__lock">SOON</span>
+            <span class="world-tab__status">PLAY</span>
           </button>
-          <button class="world-tab world-tab--space" type="button" disabled>
+          <button class="world-tab world-tab--space" data-world="cosmos" type="button" aria-pressed="false">
             <span class="world-tab__icon">C</span>
             <span><strong>Cosmos</strong><small>Big numbers &amp; data</small></span>
-            <span class="world-tab__lock">SOON</span>
+            <span class="world-tab__status">PLAY</span>
           </button>
-          <button class="world-tab world-tab--build" type="button" disabled>
+          <button class="world-tab world-tab--build" data-world="builders" type="button" aria-pressed="false">
             <span class="world-tab__icon">B</span>
             <span><strong>Builders</strong><small>Geometry &amp; area</small></span>
-            <span class="world-tab__lock">SOON</span>
+            <span class="world-tab__status">PLAY</span>
           </button>
         </div>
       </section>
 
-      <section class="mission-banner" aria-label="Current mission">
-        <div class="mission-banner__icon">÷×</div>
+      <section class="mission-banner" id="missionBanner" aria-label="Current mission">
+        <div class="mission-banner__icon" id="missionIcon">÷×</div>
         <div class="mission-banner__copy">
           <span>CURRENT MISSION</span>
           <strong id="missionTitle">Power up Nova with 10 math challenges</strong>
-          <small>Every correct answer earns coins, XP, and new styles.</small>
+          <small id="missionDetail">Every correct answer earns coins, XP, and new styles.</small>
         </div>
         <div class="mission-banner__reward">
           <span>QUEST REWARD</span>
           <strong><i class="coin-icon coin-icon--small"></i> +100</strong>
+        </div>
+      </section>
+
+      <section class="world-game-card" id="worldGameCard" hidden aria-labelledby="worldGameTitle">
+        <div class="world-game-card__header">
+          <div>
+            <p class="eyebrow" id="worldGameKicker">GAME MODE</p>
+            <h2 id="worldGameTitle">Speedway</h2>
+            <p id="worldGameDescription">Solve questions to race toward the finish line.</p>
+          </div>
+          <div class="world-level-badge">
+            <span id="worldLevelLabel">LAP</span>
+            <strong id="worldLevelValue">1</strong>
+          </div>
+        </div>
+        <div class="world-game-scene" id="worldGameScene"></div>
+        <div class="world-game-progress">
+          <div class="world-game-progress__labels">
+            <strong id="worldProgressLabel">Track progress</strong>
+            <span id="worldProgressValue">0%</span>
+          </div>
+          <div class="world-game-progress__track">
+            <span id="worldProgressFill"></span>
+          </div>
+        </div>
+        <div class="world-game-footer">
+          <span id="worldGameHint">Every correct answer gives your car a turbo boost.</span>
+          <strong id="worldGameBonus">Streak boost: +0</strong>
         </div>
       </section>
 
@@ -218,7 +246,7 @@
         <section class="challenge-panel" aria-labelledby="challenge-title">
           <div class="challenge-header">
             <div>
-              <p class="eyebrow eyebrow--indigo">MATH QUEST</p>
+              <p class="eyebrow eyebrow--indigo" id="challengeEyebrow">MATH QUEST</p>
               <h2 id="challenge-title">Ready for a brain boost?</h2>
             </div>
             <div class="curriculum-pickers">

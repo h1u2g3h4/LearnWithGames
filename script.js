@@ -8,6 +8,19 @@ const defaultState = {
   xp: 0,
   grade: 4,
   term: 1,
+  activeWorld: "math",
+  worldProgress: {
+    speedway: 0,
+    skyward: 0,
+    cosmos: 0,
+    builders: 0,
+  },
+  worldLevels: {
+    speedway: 1,
+    skyward: 1,
+    cosmos: 1,
+    builders: 1,
+  },
   avatar: "female",
   avatarNames: {
     female: "Nova",
@@ -21,6 +34,100 @@ const defaultState = {
     shoes: "sunny-shoes",
   },
   sound: true,
+};
+
+const WORLD_CONFIG = {
+  math: {
+    name: "Math Quest",
+    icon: "÷×",
+    kicker: "MATH QUEST",
+    challengeTitle: "Ready for a brain boost?",
+    mission: "Power up your hero with 10 math challenges",
+    missionDetail: "Every correct answer earns coins, XP, and new styles.",
+  },
+  speedway: {
+    name: "Speedway",
+    icon: "S",
+    kicker: "SPEEDWAY CHALLENGE",
+    challengeTitle: "Solve fast. Race faster.",
+    mission: "Race to the finish line with correct answers",
+    missionDetail: "Build a streak to activate bigger turbo boosts.",
+    description: "Every correct answer pushes your racer closer to the finish line.",
+    levelLabel: "LAP",
+    progressLabel: "Track progress",
+    hint: "Correct answers move the car. Streaks add turbo distance.",
+    baseGain: 12,
+    completionBonus: 30,
+    scene: `
+      <div class="scene-hills"></div>
+      <div class="speedway-road"></div>
+      <span class="finish-flag" aria-hidden="true">🏁</span>
+      <span class="world-player" aria-label="Race car">🏎️</span>
+    `,
+  },
+  skyward: {
+    name: "Skyward",
+    icon: "K",
+    kicker: "SKYWARD FLIGHT",
+    challengeTitle: "Climb above the clouds.",
+    mission: "Guide your plane through the sky gates",
+    missionDetail: "Each correct answer gains altitude and flight distance.",
+    description: "Solve curriculum questions to climb, cruise, and reach the next sky gate.",
+    levelLabel: "FLIGHT",
+    progressLabel: "Flight path",
+    hint: "Correct answers gain altitude. Long streaks create tailwinds.",
+    baseGain: 11,
+    completionBonus: 30,
+    scene: `
+      <span class="cloud cloud--one" aria-hidden="true">☁</span>
+      <span class="cloud cloud--two" aria-hidden="true">☁</span>
+      <span class="cloud cloud--three" aria-hidden="true">☁</span>
+      <span class="sky-gate" aria-hidden="true">🎯</span>
+      <span class="world-player" aria-label="Airplane">✈️</span>
+    `,
+  },
+  cosmos: {
+    name: "Cosmos",
+    icon: "C",
+    kicker: "COSMOS MISSION",
+    challengeTitle: "Chart a path through space.",
+    mission: "Explore a new star system with math power",
+    missionDetail: "Correct answers charge the ship and reveal new planets.",
+    description: "Power your spacecraft across the sector and discover a new planet.",
+    levelLabel: "SECTOR",
+    progressLabel: "Exploration progress",
+    hint: "Every solution charges the engines. Streaks unlock warp speed.",
+    baseGain: 10,
+    completionBonus: 35,
+    scene: `
+      <span class="planet planet--one" aria-hidden="true"></span>
+      <span class="planet planet--two" aria-hidden="true"></span>
+      <span class="cosmos-target" aria-hidden="true">✦</span>
+      <span class="world-player" aria-label="Rocket">🚀</span>
+    `,
+  },
+  builders: {
+    name: "Builders",
+    icon: "B",
+    kicker: "BUILDERS STUDIO",
+    challengeTitle: "Build it one answer at a time.",
+    mission: "Complete a new structure with math blocks",
+    missionDetail: "Each correct answer adds materials to the building site.",
+    description: "Earn construction blocks, complete the structure, and start a taller design.",
+    levelLabel: "BUILD",
+    progressLabel: "Structure complete",
+    hint: "Correct answers place blocks. Streaks deliver extra materials.",
+    baseGain: 10,
+    completionBonus: 35,
+    scene: `
+      <span class="scene-sun" aria-hidden="true"></span>
+      <span class="builder-crane" aria-hidden="true">🏗</span>
+      <span class="world-player" aria-label="Builder">👷</span>
+      <div class="building-stack" aria-label="Building progress">
+        ${Array.from({ length: 10 }, (_, index) => `<span class="building-block" data-block="${index + 1}">▦</span>`).join("")}
+      </div>
+    `,
+  },
 };
 
 const shopItems = [
@@ -453,6 +560,24 @@ const elements = {
   termSelect: document.querySelector("#termSelect"),
   curriculumTitle: document.querySelector("#curriculumTitle"),
   curriculumTopics: document.querySelector("#curriculumTopics"),
+  worldButtons: [...document.querySelectorAll(".world-tab[data-world]")],
+  worldCount: document.querySelector("#worldCount"),
+  missionBanner: document.querySelector("#missionBanner"),
+  missionIcon: document.querySelector("#missionIcon"),
+  challengeEyebrow: document.querySelector("#challengeEyebrow"),
+  challengeTitle: document.querySelector("#challenge-title"),
+  worldGameCard: document.querySelector("#worldGameCard"),
+  worldGameKicker: document.querySelector("#worldGameKicker"),
+  worldGameTitle: document.querySelector("#worldGameTitle"),
+  worldGameDescription: document.querySelector("#worldGameDescription"),
+  worldLevelLabel: document.querySelector("#worldLevelLabel"),
+  worldLevelValue: document.querySelector("#worldLevelValue"),
+  worldGameScene: document.querySelector("#worldGameScene"),
+  worldProgressLabel: document.querySelector("#worldProgressLabel"),
+  worldProgressValue: document.querySelector("#worldProgressValue"),
+  worldProgressFill: document.querySelector("#worldProgressFill"),
+  worldGameHint: document.querySelector("#worldGameHint"),
+  worldGameBonus: document.querySelector("#worldGameBonus"),
   streakCount: document.querySelector("#streakCount"),
   correctCount: document.querySelector("#correctCount"),
   sessionCoins: document.querySelector("#sessionCoins"),
@@ -481,6 +606,7 @@ const elements = {
   characterImage: document.querySelector("#characterImage"),
   heroTitle: document.querySelector("#hero-title"),
   missionTitle: document.querySelector("#missionTitle"),
+  missionDetail: document.querySelector("#missionDetail"),
   shopOwnerLabel: document.querySelector("#shopOwnerLabel"),
   avatarButtons: [...document.querySelectorAll(".avatar-option")],
   editNameButton: document.querySelector("#editNameButton"),
@@ -520,8 +646,11 @@ function loadState() {
       ...saved,
       equipped: { ...defaultState.equipped, ...saved.equipped },
       avatarNames: { ...defaultState.avatarNames, ...saved.avatarNames },
+      worldProgress: { ...defaultState.worldProgress, ...saved.worldProgress },
+      worldLevels: { ...defaultState.worldLevels, ...saved.worldLevels },
       owned: Array.from(new Set([...defaultState.owned, ...(saved.owned || [])])),
     };
+    if (!WORLD_CONFIG[nextState.activeWorld]) nextState.activeWorld = "math";
     if (currentUser) {
       nextState.grade = normalizeGrade(currentUser.grade);
       nextState.term = Number(currentUser.term) || 1;
@@ -1937,6 +2066,102 @@ function question(topic, prompt, answer, answers, tipKey, isWordProblem = false)
   return { topic, prompt, answer, answers, tipKey, isWordProblem };
 }
 
+function getActiveHeroName() {
+  return state.avatarNames[state.avatar] || (state.avatar === "male" ? "Max" : "Nova");
+}
+
+function renderWorldGame() {
+  const worldId = WORLD_CONFIG[state.activeWorld] ? state.activeWorld : "math";
+  const config = WORLD_CONFIG[worldId];
+  const isMathQuest = worldId === "math";
+  const heroName = getActiveHeroName();
+
+  elements.worldButtons.forEach((button) => {
+    const active = button.dataset.world === worldId;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+
+  elements.worldCount.textContent = "5 OF 5 OPEN";
+  elements.missionBanner.dataset.world = worldId;
+  elements.missionIcon.textContent = config.icon;
+  elements.challengeEyebrow.textContent = config.kicker;
+  elements.challengeTitle.textContent = config.challengeTitle;
+  elements.missionTitle.textContent = isMathQuest
+    ? `Power up ${heroName} with 10 math challenges`
+    : config.mission;
+  elements.missionDetail.textContent = config.missionDetail;
+  elements.worldGameCard.hidden = isMathQuest;
+
+  if (isMathQuest) return;
+
+  const progress = Math.max(0, Math.min(99, Number(state.worldProgress[worldId]) || 0));
+  const level = Math.max(1, Number(state.worldLevels[worldId]) || 1);
+  elements.worldGameCard.dataset.world = worldId;
+  elements.worldGameKicker.textContent = config.kicker;
+  elements.worldGameTitle.textContent = config.name;
+  elements.worldGameDescription.textContent = config.description;
+  elements.worldLevelLabel.textContent = config.levelLabel;
+  elements.worldLevelValue.textContent = level;
+  elements.worldProgressLabel.textContent = config.progressLabel;
+  elements.worldProgressValue.textContent = `${progress}%`;
+  elements.worldProgressFill.style.width = `${progress}%`;
+  elements.worldGameHint.textContent = config.hint;
+  elements.worldGameBonus.textContent = `Streak boost: +${Math.min(session.streak, 5) * 2}%`;
+
+  if (elements.worldGameScene.dataset.world !== worldId) {
+    elements.worldGameScene.dataset.world = worldId;
+    elements.worldGameScene.className = `world-game-scene scene-${worldId}`;
+    elements.worldGameScene.innerHTML = config.scene;
+  }
+
+  elements.worldGameScene.style.setProperty("--world-horizontal", `${progress * (worldId === "builders" ? 0.38 : worldId === "skyward" ? 0.72 : worldId === "cosmos" ? 0.76 : 0.78)}%`);
+  elements.worldGameScene.style.setProperty("--world-altitude", `${progress * (worldId === "skyward" ? 1.05 : 0.62)}px`);
+
+  if (worldId === "builders") {
+    const builtBlocks = Math.ceil(progress / 10);
+    elements.worldGameScene.querySelectorAll(".building-block").forEach((block, index) => {
+      block.classList.toggle("is-built", index < builtBlocks);
+    });
+  }
+}
+
+function setActiveWorld(worldId) {
+  if (!WORLD_CONFIG[worldId] || state.activeWorld === worldId) return;
+  state.activeWorld = worldId;
+  session.streak = 0;
+  saveState();
+  updateUI();
+  nextQuestion();
+}
+
+function advanceWorldGame() {
+  const worldId = state.activeWorld;
+  if (worldId === "math" || !WORLD_CONFIG[worldId]) return "";
+  const config = WORLD_CONFIG[worldId];
+  const streakBoost = Math.min(session.streak, 5) * 2;
+  const gain = config.baseGain + streakBoost;
+  const nextProgress = (Number(state.worldProgress[worldId]) || 0) + gain;
+
+  if (nextProgress >= 100) {
+    state.worldProgress[worldId] = nextProgress - 100;
+    state.worldLevels[worldId] = (Number(state.worldLevels[worldId]) || 1) + 1;
+    state.coins += config.completionBonus;
+    session.coins += config.completionBonus;
+    return ` ${config.levelLabel.toLowerCase()} complete — +${config.completionBonus} bonus coins!`;
+  }
+
+  state.worldProgress[worldId] = nextProgress;
+  return ` ${config.name} progress +${gain}%!`;
+}
+
+function animateWorldAdvance() {
+  if (state.activeWorld === "math") return;
+  elements.worldGameCard.classList.remove("is-advancing");
+  requestAnimationFrame(() => elements.worldGameCard.classList.add("is-advancing"));
+  window.setTimeout(() => elements.worldGameCard.classList.remove("is-advancing"), 520);
+}
+
 function nextQuestion() {
   answered = false;
   elements.questionCard.classList.remove("is-correct", "is-wrong");
@@ -1977,18 +2202,21 @@ function submitAnswer(value, selectedButton) {
     }
   });
 
+  let worldResult = "";
   if (isCorrect) {
     session.streak += 1;
     session.correct += 1;
     session.coins += currentQuestion.reward;
     state.coins += currentQuestion.reward;
     state.xp += 10 + Math.min(session.streak, 5);
+    worldResult = advanceWorldGame();
     elements.questionCard.classList.add("is-correct");
     elements.feedback.classList.add("feedback--correct");
-    elements.feedback.textContent =
+    elements.feedback.textContent = (
       session.streak >= 3
         ? `Amazing! ${session.streak} in a row — streak bonus activated!`
-        : pick(["Correct! Your brain is sparkling.", "You got it! Coins collected.", "Nice work, math hero!"]);
+        : pick(["Correct! Your brain is sparkling.", "You got it! Coins collected.", "Nice work, math hero!"])
+    ) + worldResult;
     playTone(true);
     burstConfetti(session.streak >= 3 ? 28 : 14);
   } else {
@@ -2002,6 +2230,7 @@ function submitAnswer(value, selectedButton) {
 
   saveState();
   updateUI();
+  if (isCorrect) animateWorldAdvance();
   elements.nextButton.hidden = false;
   elements.nextButton.focus();
 }
@@ -2041,6 +2270,7 @@ function updateUI() {
   elements.soundIcon.textContent = state.sound ? "♪" : "×";
   elements.soundButton.setAttribute("aria-label", state.sound ? "Turn sound off" : "Turn sound on");
   applyCharacterStyle();
+  renderWorldGame();
 }
 
 function applyCharacterStyle() {
@@ -2211,6 +2441,9 @@ function burstConfetti(count) {
   }
 }
 
+elements.worldButtons.forEach((button) => {
+  button.addEventListener("click", () => setActiveWorld(button.dataset.world));
+});
 elements.nextButton.addEventListener("click", nextQuestion);
 elements.gradeSelect.addEventListener("change", (event) => {
   if (!can("changeGrade")) {

@@ -7,13 +7,19 @@ Math Quest is a browser-based math game and classroom prototype for students fro
 - BC Kindergarten–Grade 8 questions organized into three tutor-controlled terms
 - Per-student specific curriculum checklists that override the term mix when needed
 - Coins, XP, levels, and answer streaks
+- Five playable worlds that use the learner's assigned curriculum:
+  - Math Quest — classic question and reward mode
+  - Speedway — correct answers drive a race car toward the finish line
+  - Skyward — answers gain altitude and complete flight paths
+  - Cosmos — answers charge a spacecraft and unlock new sectors
+  - Builders — answers place construction blocks and complete structures
 - Female and male characters with custom names
 - Expanded outfit, hair, shoe, and accessory shop
 - Login with separate saved progress for each learner
 - My Page for account registration, groups, grade/term assignment, and classroom roles
 - Custom roles with a permission checklist
 - Responsive desktop and mobile design
-- Future world slots for racing, flying, space, and building games
+- Separate saved progress, levels, streak boosts, and completion bonuses for every game world
 
 ## Starter administrator
 
