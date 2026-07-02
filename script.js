@@ -22,6 +22,7 @@ const defaultState = {
     builders: 1,
   },
   avatar: "female",
+  appearance: "south-asian",
   avatarNames: {
     female: "Nova",
     male: "Max",
@@ -34,6 +35,25 @@ const defaultState = {
     shoes: "sunny-shoes",
   },
   sound: true,
+};
+
+const CHARACTER_IMAGES = {
+  "south-asian": {
+    female: "assets/characters/female.png",
+    male: "assets/characters/male.png",
+  },
+  black: {
+    female: "assets/characters/female-black.png",
+    male: "assets/characters/male-black.png",
+  },
+  "east-asian": {
+    female: "assets/characters/female-east-asian.png",
+    male: "assets/characters/male-east-asian.png",
+  },
+  white: {
+    female: "assets/characters/female-white.png",
+    male: "assets/characters/male-white.png",
+  },
 };
 
 const WORLD_CONFIG = {
@@ -59,10 +79,8 @@ const WORLD_CONFIG = {
     baseGain: 12,
     completionBonus: 30,
     scene: `
-      <div class="scene-hills"></div>
-      <div class="speedway-road"></div>
-      <span class="finish-flag" aria-hidden="true">🏁</span>
-      <span class="world-player" aria-label="Race car">🏎️</span>
+      <span class="speed-lines" aria-hidden="true"></span>
+      <img class="world-player world-player-image" src="assets/worlds/speedway-car.png" alt="Futuristic red race car" />
     `,
   },
   skyward: {
@@ -79,11 +97,8 @@ const WORLD_CONFIG = {
     baseGain: 11,
     completionBonus: 30,
     scene: `
-      <span class="cloud cloud--one" aria-hidden="true">☁</span>
-      <span class="cloud cloud--two" aria-hidden="true">☁</span>
-      <span class="cloud cloud--three" aria-hidden="true">☁</span>
-      <span class="sky-gate" aria-hidden="true">🎯</span>
-      <span class="world-player" aria-label="Airplane">✈️</span>
+      <span class="flight-trail" aria-hidden="true"></span>
+      <img class="world-player world-player-image" src="assets/worlds/skyward-plane.png" alt="Teal futuristic airplane" />
     `,
   },
   cosmos: {
@@ -100,10 +115,8 @@ const WORLD_CONFIG = {
     baseGain: 10,
     completionBonus: 35,
     scene: `
-      <span class="planet planet--one" aria-hidden="true"></span>
-      <span class="planet planet--two" aria-hidden="true"></span>
-      <span class="cosmos-target" aria-hidden="true">✦</span>
-      <span class="world-player" aria-label="Rocket">🚀</span>
+      <span class="warp-trail" aria-hidden="true"></span>
+      <img class="world-player world-player-image" src="assets/worlds/cosmos-rocket.png" alt="White and violet exploration rocket" />
     `,
   },
   builders: {
@@ -120,9 +133,7 @@ const WORLD_CONFIG = {
     baseGain: 10,
     completionBonus: 35,
     scene: `
-      <span class="scene-sun" aria-hidden="true"></span>
-      <span class="builder-crane" aria-hidden="true">🏗</span>
-      <span class="world-player" aria-label="Builder">👷</span>
+      <img class="world-player world-player-image" src="assets/worlds/builders-loader.png" alt="Yellow construction loader" />
       <div class="building-stack" aria-label="Building progress">
         ${Array.from({ length: 10 }, (_, index) => `<span class="building-block" data-block="${index + 1}">▦</span>`).join("")}
       </div>
@@ -566,6 +577,8 @@ const elements = {
   missionIcon: document.querySelector("#missionIcon"),
   challengeEyebrow: document.querySelector("#challengeEyebrow"),
   challengeTitle: document.querySelector("#challenge-title"),
+  gameLayout: document.querySelector("#gameLayout"),
+  heroCard: document.querySelector("#heroCard"),
   worldGameCard: document.querySelector("#worldGameCard"),
   worldGameKicker: document.querySelector("#worldGameKicker"),
   worldGameTitle: document.querySelector("#worldGameTitle"),
@@ -609,6 +622,7 @@ const elements = {
   missionDetail: document.querySelector("#missionDetail"),
   shopOwnerLabel: document.querySelector("#shopOwnerLabel"),
   avatarButtons: [...document.querySelectorAll(".avatar-option")],
+  appearanceSelect: document.querySelector("#appearanceSelect"),
   editNameButton: document.querySelector("#editNameButton"),
   heroNameEditor: document.querySelector("#heroNameEditor"),
   heroNameInput: document.querySelector("#heroNameInput"),
@@ -651,6 +665,7 @@ function loadState() {
       owned: Array.from(new Set([...defaultState.owned, ...(saved.owned || [])])),
     };
     if (!WORLD_CONFIG[nextState.activeWorld]) nextState.activeWorld = "math";
+    if (!CHARACTER_IMAGES[nextState.appearance]) nextState.appearance = "south-asian";
     if (currentUser) {
       nextState.grade = normalizeGrade(currentUser.grade);
       nextState.term = Number(currentUser.term) || 1;
@@ -2092,6 +2107,8 @@ function renderWorldGame() {
     : config.mission;
   elements.missionDetail.textContent = config.missionDetail;
   elements.worldGameCard.hidden = isMathQuest;
+  elements.heroCard.hidden = !isMathQuest;
+  elements.gameLayout.classList.toggle("is-world-mode", !isMathQuest);
 
   if (isMathQuest) return;
 
@@ -2115,8 +2132,8 @@ function renderWorldGame() {
     elements.worldGameScene.innerHTML = config.scene;
   }
 
-  elements.worldGameScene.style.setProperty("--world-horizontal", `${progress * (worldId === "builders" ? 0.38 : worldId === "skyward" ? 0.72 : worldId === "cosmos" ? 0.76 : 0.78)}%`);
-  elements.worldGameScene.style.setProperty("--world-altitude", `${progress * (worldId === "skyward" ? 1.05 : 0.62)}px`);
+  elements.worldGameScene.style.setProperty("--world-horizontal", `${progress * (worldId === "builders" ? 0.42 : worldId === "skyward" ? 0.5 : worldId === "cosmos" ? 0.5 : 0.54)}%`);
+  elements.worldGameScene.style.setProperty("--world-altitude", `${progress * (worldId === "skyward" ? 0.72 : 0.48)}px`);
 
   if (worldId === "builders") {
     const builtBlocks = Math.ceil(progress / 10);
@@ -2280,8 +2297,9 @@ function applyCharacterStyle() {
   const shoes = shopItems.find((item) => item.id === state.equipped.shoes);
   const isMale = state.avatar === "male";
   const heroName = state.avatarNames[state.avatar] || (isMale ? "Max" : "Nova");
+  const appearanceImages = CHARACTER_IMAGES[state.appearance] || CHARACTER_IMAGES["south-asian"];
 
-  elements.characterImage.src = `assets/characters/${isMale ? "male" : "female"}.png`;
+  elements.characterImage.src = appearanceImages[state.avatar];
   elements.characterImage.alt = `${heroName}, your math hero`;
   elements.character.dataset.avatar = state.avatar;
   elements.character.setAttribute("aria-label", `${heroName}, your styled character`);
@@ -2297,6 +2315,7 @@ function applyCharacterStyle() {
   elements.characterAccessory.dataset.accessory = accessory.id;
   elements.characterAccessory.textContent = accessory.id === "no-extra" ? "" : accessory.emoji;
   elements.characterShoes.style.background = shoes.color;
+  elements.appearanceSelect.value = state.appearance;
   elements.avatarButtons.forEach((button) => {
     const active = button.dataset.avatar === state.avatar;
     button.classList.toggle("is-active", active);
@@ -2498,6 +2517,13 @@ elements.avatarButtons.forEach((button) => {
     updateUI();
     playTone(true);
   });
+});
+elements.appearanceSelect.addEventListener("change", (event) => {
+  if (!CHARACTER_IMAGES[event.target.value]) return;
+  state.appearance = event.target.value;
+  saveState();
+  updateUI();
+  playTone(true);
 });
 elements.editNameButton.addEventListener("click", openNameEditor);
 elements.heroNameEditor.addEventListener("submit", (event) => {

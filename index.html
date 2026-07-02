@@ -167,8 +167,8 @@
         </div>
       </section>
 
-      <div class="game-layout">
-        <section class="hero-card" aria-labelledby="hero-title">
+      <div class="game-layout" id="gameLayout">
+        <section class="hero-card" id="heroCard" aria-labelledby="hero-title">
           <div class="hero-card__header">
             <div>
               <p class="eyebrow">YOUR MATH HERO</p>
@@ -203,6 +203,15 @@
                   Boy
                 </button>
               </div>
+              <label class="appearance-picker">
+                <span>CHARACTER LOOK</span>
+                <select id="appearanceSelect" aria-label="Character appearance">
+                  <option value="south-asian">South Asian</option>
+                  <option value="black">Black</option>
+                  <option value="east-asian">East Asian</option>
+                  <option value="white">White</option>
+                </select>
+              </label>
             </div>
           </div>
 
@@ -243,7 +252,7 @@
           </button>
         </section>
 
-        <section class="challenge-panel" aria-labelledby="challenge-title">
+        <section class="challenge-panel" id="challengePanel" aria-labelledby="challenge-title">
           <div class="challenge-header">
             <div>
               <p class="eyebrow eyebrow--indigo" id="challengeEyebrow">MATH QUEST</p>

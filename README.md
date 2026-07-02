@@ -13,7 +13,9 @@ Math Quest is a browser-based math game and classroom prototype for students fro
   - Skyward — answers gain altitude and complete flight paths
   - Cosmos — answers charge a spacecraft and unlock new sectors
   - Builders — answers place construction blocks and complete structures
-- Female and male characters with custom names
+- Cinematic HD backgrounds and detailed vehicles for every non-Math world
+- The Math Hero card automatically hides while another game world is active
+- Female and male characters with custom names and selectable South Asian, Black, East Asian, and White appearances
 - Expanded outfit, hair, shoe, and accessory shop
 - Login with separate saved progress for each learner
 - My Page for account registration, groups, grade/term assignment, and classroom roles

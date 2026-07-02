@@ -1112,11 +1112,165 @@ h2 {
   --world-accent-light: #fbbf24;
 }
 
+.world-game-scene {
+  min-height: 320px;
+  border: 1px solid rgb(255 255 255 / 34%);
+  box-shadow:
+    inset 0 0 70px rgb(7 12 35 / 14%),
+    0 18px 42px -26px rgb(19 24 61 / 66%);
+  background-position: center;
+  background-size: cover;
+}
+
+.world-game-scene::before {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 5%), transparent 44%, rgb(5 10 30 / 18%)),
+    radial-gradient(circle at 72% 32%, rgb(255 255 255 / 20%), transparent 25%);
+  content: "";
+  pointer-events: none;
+}
+
+.scene-speedway {
+  background-image:
+    linear-gradient(180deg, transparent 45%, rgb(18 21 35 / 12%) 100%),
+    url("assets/worlds/speedway-hd.webp");
+  background-position: center 58%;
+}
+
+.scene-skyward {
+  background-image:
+    linear-gradient(180deg, rgb(14 119 186 / 4%), rgb(28 71 125 / 10%)),
+    url("assets/worlds/skyward-hd.webp");
+  background-position: center 54%;
+}
+
+.scene-cosmos {
+  background-image:
+    radial-gradient(circle at 72% 40%, transparent 0 22%, rgb(11 8 35 / 12%) 72%),
+    url("assets/worlds/cosmos-hd.webp");
+  background-position: center;
+  background-size: cover;
+}
+
+.scene-builders {
+  background-image:
+    linear-gradient(180deg, transparent 40%, rgb(23 29 42 / 14%)),
+    url("assets/worlds/builders-hd.webp");
+  background-position: center 59%;
+}
+
+.world-player-image {
+  width: 245px;
+  height: auto;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 14px 10px rgb(11 16 39 / 38%))
+    drop-shadow(0 0 12px rgb(255 255 255 / 12%));
+  transform-origin: 50% 75%;
+}
+
+.world-game-card.is-advancing .world-player-image {
+  transform: translateY(-10px) rotate(-2deg) scale(1.06);
+}
+
+.scene-speedway .world-player-image {
+  bottom: 18px;
+  left: calc(1% + var(--world-horizontal, 0%));
+  width: min(260px, 45%);
+}
+
+.scene-skyward .world-player-image {
+  bottom: calc(28px + var(--world-altitude, 0px));
+  left: calc(1% + var(--world-horizontal, 0%));
+  width: min(230px, 42%);
+  transform: rotate(-6deg);
+}
+
+.scene-cosmos .world-player-image {
+  bottom: calc(31px + var(--world-altitude, 0px));
+  left: calc(1% + var(--world-horizontal, 0%));
+  width: min(220px, 40%);
+  transform: rotate(-7deg);
+}
+
+.scene-builders .world-player-image {
+  bottom: 8px;
+  left: calc(2% + var(--world-horizontal, 0%));
+  width: min(225px, 43%);
+}
+
+.speed-lines,
+.flight-trail,
+.warp-trail {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.speed-lines {
+  bottom: 52px;
+  width: 42%;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #ffb14f 70%, #fff);
+  box-shadow: 0 -16px 0 -1px rgb(255 218 137 / 72%), 0 17px 0 -1px rgb(255 117 58 / 62%);
+}
+
+.flight-trail,
+.warp-trail {
+  bottom: 42px;
+  width: 64%;
+  height: 8px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, transparent, rgb(194 244 255 / 28%), rgb(255 255 255 / 82%));
+  filter: blur(2px);
+  transform: rotate(-12deg);
+  transform-origin: left center;
+}
+
+.warp-trail {
+  height: 12px;
+  background: linear-gradient(90deg, transparent, rgb(147 51 234 / 48%), #67e8f9);
+  box-shadow: 0 0 18px #a855f7;
+}
+
+.scene-builders .building-stack {
+  z-index: 3;
+  right: 9%;
+  bottom: 25px;
+  grid-template-columns: repeat(2, 58px);
+  padding: 9px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 9px;
+  background: rgb(10 25 43 / 26%);
+  backdrop-filter: blur(3px);
+}
+
+.scene-builders .building-block {
+  height: 31px;
+  border-color: #d98722;
+  color: #fff5da;
+  background: linear-gradient(145deg, #ffd36e, #f59e0b 70%, #b45309);
+  box-shadow: inset 0 0 7px rgb(255 255 255 / 30%), 0 4px 8px rgb(0 0 0 / 18%);
+}
+
 .game-layout {
   display: grid;
   grid-template-columns: minmax(320px, 0.76fr) minmax(520px, 1.35fr);
   gap: 22px;
   align-items: stretch;
+}
+
+.game-layout.is-world-mode {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.hero-card[hidden] {
+  display: none;
 }
 
 .hero-card,
@@ -1283,6 +1437,34 @@ h2 {
   color: #fff;
   background: var(--indigo);
   box-shadow: 0 3px 0 var(--indigo-dark);
+}
+
+.appearance-picker {
+  display: grid;
+  gap: 4px;
+  width: 112px;
+}
+
+.appearance-picker span {
+  color: var(--muted);
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-align: right;
+}
+
+.appearance-picker select {
+  width: 100%;
+  min-height: 31px;
+  padding: 5px 24px 5px 8px;
+  border: 1px solid #c7d2fe;
+  border-radius: 9px;
+  color: var(--indigo-dark);
+  font-family: "Nunito", sans-serif;
+  font-size: 9px;
+  font-weight: 900;
+  background: #f7f7ff;
+  cursor: pointer;
 }
 
 .character-stage {
@@ -2813,7 +2995,7 @@ h2 {
   }
 
   .world-game-scene {
-    min-height: 160px;
+    min-height: 240px;
   }
 
   .game-layout {
@@ -2980,7 +3162,7 @@ h2 {
   }
 
   .world-game-scene {
-    min-height: 145px;
+    min-height: 200px;
   }
 
   .world-game-footer {
@@ -2993,8 +3175,29 @@ h2 {
     font-size: 40px;
   }
 
+  .scene-speedway .world-player-image {
+    width: min(170px, 45%);
+  }
+
+  .scene-skyward .world-player-image,
+  .scene-cosmos .world-player-image {
+    width: min(155px, 42%);
+  }
+
+  .scene-builders .world-player-image {
+    width: min(165px, 43%);
+  }
+
   .building-stack {
     right: 8%;
+  }
+
+  .scene-builders .building-stack {
+    grid-template-columns: repeat(2, 38px);
+  }
+
+  .scene-builders .building-block {
+    height: 20px;
   }
 
   .hero-card {
