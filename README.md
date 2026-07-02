@@ -14,7 +14,7 @@ Math Quest is a browser-based math game and classroom prototype for students fro
   - Cosmos — answers charge a spacecraft and unlock new sectors
   - Builders — answers place construction blocks and complete structures
 - Cinematic HD backgrounds and detailed vehicles for every non-Math world
-- Cosmos warp-boost animation with engine flare, speed streaks, and a synthesized rocket sound effect
+- Unique answer animations and synthesized sound effects for all five worlds: hero celebration, race-car turbo, airplane climb, rocket warp, and construction impact
 - The Math Hero card automatically hides while another game world is active
 - Female and male characters with custom names and selectable South Asian, Black, East Asian, and White appearances
 - Expanded outfit, hair, shoe, and accessory shop

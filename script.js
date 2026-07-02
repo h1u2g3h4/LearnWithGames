@@ -80,6 +80,8 @@ const WORLD_CONFIG = {
     completionBonus: 30,
     scene: `
       <span class="speed-lines" aria-hidden="true"></span>
+      <span class="turbo-flame" aria-hidden="true"></span>
+      <span class="world-action-label speedway-action-label" aria-hidden="true">TURBO!</span>
       <img class="world-player world-player-image" src="assets/worlds/speedway-car.png" alt="Futuristic red race car" />
     `,
   },
@@ -98,6 +100,8 @@ const WORLD_CONFIG = {
     completionBonus: 30,
     scene: `
       <span class="flight-trail" aria-hidden="true"></span>
+      <span class="air-speed-lines" aria-hidden="true"></span>
+      <span class="world-action-label skyward-action-label" aria-hidden="true">CLIMB!</span>
       <img class="world-player world-player-image" src="assets/worlds/skyward-plane.png" alt="Teal futuristic airplane" />
     `,
   },
@@ -136,6 +140,9 @@ const WORLD_CONFIG = {
     baseGain: 10,
     completionBonus: 35,
     scene: `
+      <span class="builder-dust builder-dust--one" aria-hidden="true"></span>
+      <span class="builder-dust builder-dust--two" aria-hidden="true"></span>
+      <span class="world-action-label builders-action-label" aria-hidden="true">BUILD!</span>
       <img class="world-player world-player-image" src="assets/worlds/builders-loader.png" alt="Yellow construction loader" />
       <div class="building-stack" aria-label="Building progress">
         ${Array.from({ length: 10 }, (_, index) => `<span class="building-block" data-block="${index + 1}">▦</span>`).join("")}
@@ -2176,15 +2183,31 @@ function advanceWorldGame() {
 }
 
 function animateWorldAdvance() {
-  if (state.activeWorld === "math") return;
   const worldId = state.activeWorld;
-  const animationDuration = worldId === "cosmos" ? 1180 : 680;
+  if (worldId === "math") {
+    elements.heroCard.classList.remove("is-celebrating");
+    requestAnimationFrame(() => {
+      elements.heroCard.classList.add("is-celebrating");
+      playMathQuestSuccessSound();
+    });
+    window.setTimeout(() => elements.heroCard.classList.remove("is-celebrating"), 980);
+    return;
+  }
+
+  const animationDuration = worldId === "cosmos" ? 1180 : worldId === "builders" ? 920 : 880;
   elements.worldGameCard.classList.remove("is-advancing");
   requestAnimationFrame(() => {
     elements.worldGameCard.classList.add("is-advancing");
-    if (worldId === "cosmos") playCosmosBoostSound();
+    if (worldId === "builders") {
+      const builtBlocks = [...elements.worldGameScene.querySelectorAll(".building-block.is-built")];
+      builtBlocks[builtBlocks.length - 1]?.classList.add("is-new-block");
+    }
+    playWorldAdvanceSound(worldId);
   });
-  window.setTimeout(() => elements.worldGameCard.classList.remove("is-advancing"), animationDuration);
+  window.setTimeout(() => {
+    elements.worldGameCard.classList.remove("is-advancing");
+    elements.worldGameScene.querySelectorAll(".is-new-block").forEach((block) => block.classList.remove("is-new-block"));
+  }, animationDuration);
 }
 
 function nextQuestion() {
@@ -2449,6 +2472,140 @@ function playTone(correct) {
   oscillator.stop(audioContext.currentTime + 0.2);
 }
 
+function playWorldAdvanceSound(worldId) {
+  if (worldId === "speedway") playSpeedwayBoostSound();
+  if (worldId === "skyward") playSkywardLiftSound();
+  if (worldId === "cosmos") playCosmosBoostSound();
+  if (worldId === "builders") playBuildersImpactSound();
+}
+
+function playMathQuestSuccessSound() {
+  if (!state.sound) return;
+  audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+  if (audioContext.state === "suspended") audioContext.resume();
+
+  const now = audioContext.currentTime;
+  [659, 784, 1047].forEach((frequency, index) => {
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    const start = now + index * 0.075;
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(frequency, start);
+    gain.gain.setValueAtTime(0.001, start);
+    gain.gain.exponentialRampToValueAtTime(0.045, start + 0.025);
+    gain.gain.exponentialRampToValueAtTime(0.001, start + 0.24);
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+    oscillator.start(start);
+    oscillator.stop(start + 0.25);
+  });
+}
+
+function playSpeedwayBoostSound() {
+  if (!state.sound) return;
+  audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+  if (audioContext.state === "suspended") audioContext.resume();
+
+  const now = audioContext.currentTime;
+  const engine = audioContext.createOscillator();
+  const filter = audioContext.createBiquadFilter();
+  const gain = audioContext.createGain();
+  engine.type = "sawtooth";
+  engine.frequency.setValueAtTime(68, now);
+  engine.frequency.exponentialRampToValueAtTime(230, now + 0.56);
+  engine.frequency.exponentialRampToValueAtTime(150, now + 0.78);
+  filter.type = "lowpass";
+  filter.frequency.setValueAtTime(520, now);
+  filter.frequency.exponentialRampToValueAtTime(2100, now + 0.45);
+  gain.gain.setValueAtTime(0.001, now);
+  gain.gain.exponentialRampToValueAtTime(0.052, now + 0.06);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+  engine.connect(filter);
+  filter.connect(gain);
+  gain.connect(audioContext.destination);
+  engine.start(now);
+  engine.stop(now + 0.82);
+}
+
+function playSkywardLiftSound() {
+  if (!state.sound) return;
+  audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+  if (audioContext.state === "suspended") audioContext.resume();
+
+  const now = audioContext.currentTime;
+  const turbine = audioContext.createOscillator();
+  const turbineGain = audioContext.createGain();
+  turbine.type = "sine";
+  turbine.frequency.setValueAtTime(260, now);
+  turbine.frequency.exponentialRampToValueAtTime(720, now + 0.7);
+  turbineGain.gain.setValueAtTime(0.001, now);
+  turbineGain.gain.exponentialRampToValueAtTime(0.038, now + 0.08);
+  turbineGain.gain.exponentialRampToValueAtTime(0.001, now + 0.76);
+  turbine.connect(turbineGain);
+  turbineGain.connect(audioContext.destination);
+  turbine.start(now);
+  turbine.stop(now + 0.78);
+
+  playNoiseSweep(now, 0.68, 520, 2800, 0.026);
+}
+
+function playBuildersImpactSound() {
+  if (!state.sound) return;
+  audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+  if (audioContext.state === "suspended") audioContext.resume();
+
+  const now = audioContext.currentTime;
+  const thud = audioContext.createOscillator();
+  const thudGain = audioContext.createGain();
+  thud.type = "sine";
+  thud.frequency.setValueAtTime(115, now);
+  thud.frequency.exponentialRampToValueAtTime(46, now + 0.24);
+  thudGain.gain.setValueAtTime(0.075, now);
+  thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+  thud.connect(thudGain);
+  thudGain.connect(audioContext.destination);
+  thud.start(now);
+  thud.stop(now + 0.31);
+
+  const clank = audioContext.createOscillator();
+  const clankGain = audioContext.createGain();
+  clank.type = "triangle";
+  clank.frequency.setValueAtTime(760, now + 0.05);
+  clank.frequency.exponentialRampToValueAtTime(280, now + 0.34);
+  clankGain.gain.setValueAtTime(0.035, now + 0.05);
+  clankGain.gain.exponentialRampToValueAtTime(0.001, now + 0.36);
+  clank.connect(clankGain);
+  clankGain.connect(audioContext.destination);
+  clank.start(now + 0.05);
+  clank.stop(now + 0.37);
+}
+
+function playNoiseSweep(startTime, duration, startFrequency, endFrequency, volume) {
+  const noiseLength = Math.floor(audioContext.sampleRate * duration);
+  const noiseBuffer = audioContext.createBuffer(1, noiseLength, audioContext.sampleRate);
+  const noiseData = noiseBuffer.getChannelData(0);
+  for (let index = 0; index < noiseLength; index += 1) {
+    noiseData[index] = (Math.random() * 2 - 1) * (1 - index / noiseLength);
+  }
+
+  const noise = audioContext.createBufferSource();
+  const filter = audioContext.createBiquadFilter();
+  const gain = audioContext.createGain();
+  noise.buffer = noiseBuffer;
+  filter.type = "bandpass";
+  filter.frequency.setValueAtTime(startFrequency, startTime);
+  filter.frequency.exponentialRampToValueAtTime(endFrequency, startTime + duration * 0.78);
+  filter.Q.value = 0.75;
+  gain.gain.setValueAtTime(0.001, startTime);
+  gain.gain.exponentialRampToValueAtTime(volume, startTime + 0.05);
+  gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+  noise.connect(filter);
+  filter.connect(gain);
+  gain.connect(audioContext.destination);
+  noise.start(startTime);
+  noise.stop(startTime + duration);
+}
+
 function playCosmosBoostSound() {
   if (!state.sound) return;
   audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
@@ -2474,29 +2631,7 @@ function playCosmosBoostSound() {
   engine.start(now);
   engine.stop(now + 0.92);
 
-  const noiseLength = Math.floor(audioContext.sampleRate * 0.72);
-  const noiseBuffer = audioContext.createBuffer(1, noiseLength, audioContext.sampleRate);
-  const noiseData = noiseBuffer.getChannelData(0);
-  for (let index = 0; index < noiseLength; index += 1) {
-    noiseData[index] = (Math.random() * 2 - 1) * (1 - index / noiseLength);
-  }
-
-  const noise = audioContext.createBufferSource();
-  const noiseFilter = audioContext.createBiquadFilter();
-  const noiseGain = audioContext.createGain();
-  noise.buffer = noiseBuffer;
-  noiseFilter.type = "bandpass";
-  noiseFilter.frequency.setValueAtTime(900, now);
-  noiseFilter.frequency.exponentialRampToValueAtTime(2600, now + 0.55);
-  noiseFilter.Q.value = 0.7;
-  noiseGain.gain.setValueAtTime(0.001, now);
-  noiseGain.gain.exponentialRampToValueAtTime(0.038, now + 0.06);
-  noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
-  noise.connect(noiseFilter);
-  noiseFilter.connect(noiseGain);
-  noiseGain.connect(audioContext.destination);
-  noise.start(now);
-  noise.stop(now + 0.72);
+  playNoiseSweep(now, 0.72, 900, 2600, 0.038);
 }
 
 function playPurchaseTone() {
