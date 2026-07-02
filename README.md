@@ -1,10 +1,11 @@
 # Learn With Games
 
-Math Quest is a browser-based math game and classroom prototype for students in Grades 4–6. Players solve curriculum-matched questions, earn coins and XP, customize a character, and unlock rewards.
+Math Quest is a browser-based math game and classroom prototype for students from Kindergarten through Grade 8. Players solve curriculum-matched questions, earn coins and XP, customize a character, and unlock rewards.
 
 ## Features
 
-- BC Grade 4–6 questions organized into three tutor-controlled terms
+- BC Kindergarten–Grade 8 questions organized into three tutor-controlled terms
+- Per-student specific curriculum checklists that override the term mix when needed
 - Coins, XP, levels, and answer streaks
 - Female and male characters with custom names
 - Expanded outfit, hair, shoe, and accessory shop
@@ -23,7 +24,9 @@ The account system is a front-end prototype. Passwords are stored as SHA-256 has
 
 ## Curriculum
 
-The question engine is aligned with the official BC Mathematics curriculum content for [Grade 4](https://curriculum.gov.bc.ca/curriculum/mathematics/4/core), [Grade 5](https://curriculum.gov.bc.ca/curriculum/mathematics/5/core), and [Grade 6](https://curriculum.gov.bc.ca/curriculum/mathematics/6/core). The three-term sequence is a tutoring-friendly organization of those topics rather than an official provincial term schedule.
+The question engine follows the main skill areas in the official [BC Mathematics curriculum](https://curriculum.gov.bc.ca/curriculum/mathematics), from [Kindergarten](https://curriculum.gov.bc.ca/curriculum/mathematics/k/core) through [Grade 8](https://curriculum.gov.bc.ca/curriculum/mathematics/8/core). The three-term sequence is a tutoring-friendly organization of those topics rather than an official provincial term schedule.
+
+Teachers can keep a learner on the normal term plan or open **Specific curriculum** in My Page and select only the topics that should appear. For example, a Grade 5 learner can practise only addition, subtraction, multiplication, and division while remaining assigned to Term 2.
 
 ## Run locally
 

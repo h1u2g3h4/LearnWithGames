@@ -61,6 +61,11 @@ const shopItems = [
 ];
 
 const tips = {
+  counting: "Touch or point to each object once as you count.",
+  comparing: "Compare the biggest place value first.",
+  measurement: "Use the same-sized unit each time and start at the baseline.",
+  shapes: "Count sides and corners, then look for equal lengths.",
+  graphs: "Read the labels first, then compare the amounts.",
   number: "Read each digit by its place before deciding its value.",
   addition: "Estimate first, then use place value to check whether your answer is reasonable.",
   multiplication: "Split one factor apart: 7 × 8 can become 7 × 5 plus 7 × 3.",
@@ -76,6 +81,11 @@ const tips = {
   percent: "Think of a percent as an amount out of 100.",
   ratio: "Equivalent ratios grow or shrink by the same factor.",
   money: "Estimate the total before calculating exact dollars and cents.",
+  integers: "Picture negative and positive numbers on a number line.",
+  linear: "Substitute the input carefully, then follow the operation rule.",
+  roots: "Ask which number multiplied by itself makes the given square.",
+  pythagorean: "For a right triangle, use a² + b² = c².",
+  data: "Order the values before finding the median or mode.",
   word: "Underline the numbers and decide what the question is asking first.",
 };
 
@@ -84,12 +94,120 @@ const PERMISSION_DEFINITIONS = [
   { id: "manageGroups", label: "Create and manage groups" },
   { id: "changeGrade", label: "Change grade levels" },
   { id: "changeTerm", label: "Change curriculum terms" },
+  { id: "changeCurriculum", label: "Assign specific curriculum" },
   { id: "assignRoles", label: "Assign classroom roles" },
   { id: "manageRoles", label: "Create custom roles" },
   { id: "viewCurriculum", label: "View curriculum map" },
 ];
 
+const GRADE_LEVELS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+const TOPIC_LABELS = {
+  counting: "Counting & Number Sense",
+  numberCompare: "Compare Numbers",
+  placeValue: "Place Value",
+  skipCounting: "Skip Counting",
+  addition: "Addition",
+  subtraction: "Subtraction",
+  multiplication: "Multiplication",
+  division: "Division",
+  fractions: "Fractions",
+  fractionOperations: "Fraction Operations",
+  decimals: "Decimal Operations",
+  patterns: "Patterns",
+  equations: "Equations",
+  measurement: "Measurement",
+  time: "Time",
+  shapes: "Shapes & Geometry",
+  perimeter: "Perimeter",
+  area: "Area",
+  circles: "Circles",
+  volume: "Volume",
+  surfaceArea: "Surface Area",
+  pythagorean: "Pythagorean Theorem",
+  graphs: "Graphs & Data",
+  probability: "Probability",
+  money: "Financial Literacy",
+  orderOperations: "Order of Operations",
+  factors: "Factors & Multiples",
+  integers: "Integer Operations",
+  ratios: "Ratios & Proportions",
+  percents: "Percents",
+  linearRelations: "Linear Relations",
+  coordinates: "Coordinates",
+  squaresRoots: "Squares, Cubes & Roots",
+  centralTendency: "Mean, Median & Mode",
+};
+
 const curriculumMap = {
+  0: {
+    1: {
+      title: "Numbers to 10",
+      summary: "Counting, comparing quantities, and making 5 and 10",
+      topics: ["counting", "numberCompare", "addition"],
+    },
+    2: {
+      title: "Patterns, Shapes & Measurement",
+      summary: "Repeating patterns, shape attributes, and direct comparison",
+      topics: ["patterns", "shapes", "measurement"],
+    },
+    3: {
+      title: "Graphs, Chance & Money Play",
+      summary: "Picture graphs, likely and unlikely events, and recognizing coins",
+      topics: ["graphs", "probability", "money"],
+    },
+  },
+  1: {
+    1: {
+      title: "Numbers & Operations to 20",
+      summary: "Counting, place value, addition, and subtraction to 20",
+      topics: ["counting", "placeValue", "addition", "subtraction"],
+    },
+    2: {
+      title: "Patterns, Equality & Measurement",
+      summary: "Repeating patterns, equalities, non-standard measurement, and shapes",
+      topics: ["patterns", "equations", "measurement", "shapes"],
+    },
+    3: {
+      title: "Graphs, Chance & Coins",
+      summary: "Concrete graphs, probability language, and Canadian coin values",
+      topics: ["graphs", "probability", "money"],
+    },
+  },
+  2: {
+    1: {
+      title: "Numbers to 100",
+      summary: "Place value, skip counting, and addition and subtraction facts",
+      topics: ["placeValue", "skipCounting", "addition", "subtraction"],
+    },
+    2: {
+      title: "Patterns, Equations & Measurement",
+      summary: "Increasing patterns, unknown quantities, centimetres, metres, and shapes",
+      topics: ["patterns", "equations", "measurement", "shapes"],
+    },
+    3: {
+      title: "Graphs, Chance & Money",
+      summary: "Picture graphs, likelihood, coin combinations, spending, and saving",
+      topics: ["graphs", "probability", "money"],
+    },
+  },
+  3: {
+    1: {
+      title: "Numbers & Operations to 1,000",
+      summary: "Place value, addition, subtraction, multiplication, and division concepts",
+      topics: ["placeValue", "addition", "subtraction", "multiplication", "division"],
+    },
+    2: {
+      title: "Fractions, Patterns & Equations",
+      summary: "Equal-part fractions, increasing patterns, and one-step equations",
+      topics: ["fractions", "patterns", "equations"],
+    },
+    3: {
+      title: "Measurement, Geometry & Chance",
+      summary: "Standard units, area and perimeter concepts, shapes, probability, and money",
+      topics: ["measurement", "perimeter", "area", "shapes", "probability", "money"],
+    },
+  },
   4: {
     1: {
       title: "Number Sense & Multiplication Foundations",
@@ -141,6 +259,40 @@ const curriculumMap = {
       topics: ["equations", "patterns", "area", "volume", "probability", "money"],
     },
   },
+  7: {
+    1: {
+      title: "Integers & Decimal Operations",
+      summary: "Facts to 100, integer operations, decimals, and order of operations",
+      topics: ["multiplication", "division", "integers", "decimals", "orderOperations"],
+    },
+    2: {
+      title: "Proportions & Linear Relations",
+      summary: "Fractions, decimals, ratios, percents, linear relations, and two-step equations",
+      topics: ["fractions", "ratios", "percents", "linearRelations", "equations"],
+    },
+    3: {
+      title: "Circles, Coordinates & Probability",
+      summary: "Circle measurement, volume, coordinate planes, circle graphs, and probability",
+      topics: ["circles", "volume", "coordinates", "graphs", "probability", "money"],
+    },
+  },
+  8: {
+    1: {
+      title: "Roots, Percents & Fraction Operations",
+      summary: "Perfect squares and cubes, roots, proportional reasoning, and fraction operations",
+      topics: ["squaresRoots", "percents", "ratios", "fractionOperations"],
+    },
+    2: {
+      title: "Linear Relations & Equations",
+      summary: "Expressions, substitution, discrete linear relations, and two-step equations",
+      topics: ["linearRelations", "equations", "integers"],
+    },
+    3: {
+      title: "3D Geometry, Data & Probability",
+      summary: "Surface area, volume, Pythagorean theorem, averages, probability, and best buys",
+      topics: ["surfaceArea", "volume", "pythagorean", "centralTendency", "probability", "money"],
+    },
+  },
 };
 
 function createDefaultClassroomData() {
@@ -161,6 +313,7 @@ function createDefaultClassroomData() {
           "manageGroups",
           "changeGrade",
           "changeTerm",
+          "changeCurriculum",
           "assignRoles",
           "viewCurriculum",
         ],
@@ -182,6 +335,7 @@ function createDefaultClassroomData() {
         roleId: "admin",
         grade: 4,
         term: 1,
+        specificTopics: [],
         groupId: "",
         createdAt: new Date().toISOString(),
       },
@@ -193,15 +347,54 @@ function normalizeUsername(value) {
   return value.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
+function normalizeGrade(value) {
+  const grade = Number(value);
+  return GRADE_LEVELS.includes(grade) ? grade : 4;
+}
+
+function gradeLabel(grade) {
+  return Number(grade) === 0 ? "Kindergarten" : `Grade ${Number(grade)}`;
+}
+
+function topicLabel(topicId) {
+  return TOPIC_LABELS[topicId] || topicId;
+}
+
+function getGradeTopics(grade) {
+  const gradeCurriculum = curriculumMap[normalizeGrade(grade)] || curriculumMap[4];
+  return Array.from(new Set([1, 2, 3].flatMap((term) => gradeCurriculum[term].topics)));
+}
+
+function validSpecificTopics(user) {
+  const allowed = new Set(getGradeTopics(user?.grade ?? 4));
+  return (user?.specificTopics || []).filter((topic) => allowed.has(topic));
+}
+
 function loadClassroomData() {
   const defaults = createDefaultClassroomData();
   try {
     const saved = JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY));
     if (!saved) return defaults;
 
-    const roles = Array.isArray(saved.roles) ? saved.roles : defaults.roles;
+    const roles = (Array.isArray(saved.roles) ? saved.roles : defaults.roles).map((role) => {
+      if (role.id === "admin") {
+        return { ...role, permissions: PERMISSION_DEFINITIONS.map((permission) => permission.id) };
+      }
+      if (role.id === "teacher") {
+        return {
+          ...role,
+          permissions: Array.from(new Set([...(role.permissions || []), "changeCurriculum"])),
+        };
+      }
+      return { ...role, permissions: Array.isArray(role.permissions) ? role.permissions : [] };
+    });
     const groups = Array.isArray(saved.groups) ? saved.groups : defaults.groups;
-    const users = Array.isArray(saved.users) ? saved.users : [];
+    const users = (Array.isArray(saved.users) ? saved.users : []).map((user) => ({
+      ...user,
+      grade: normalizeGrade(user.grade),
+      term: [1, 2, 3].includes(Number(user.term)) ? Number(user.term) : 1,
+      specificTopics: Array.isArray(user.specificTopics) ? user.specificTopics : [],
+    }));
     const adminExists = users.some((user) => user.id === "user-hugh-kang");
     return {
       roles,
@@ -247,6 +440,7 @@ let currentQuestion = null;
 let answered = false;
 let activeShopCategory = "outfit";
 let activeAdminTab = "people";
+let editingCurriculumUserId = null;
 let audioContext = null;
 
 const elements = {
@@ -329,7 +523,7 @@ function loadState() {
       owned: Array.from(new Set([...defaultState.owned, ...(saved.owned || [])])),
     };
     if (currentUser) {
-      nextState.grade = Number(currentUser.grade) || 4;
+      nextState.grade = normalizeGrade(currentUser.grade);
       nextState.term = Number(currentUser.term) || 1;
     }
     return nextState;
@@ -449,8 +643,8 @@ function groupOptions(selectedGroupId = "") {
 }
 
 function gradeOptions(selectedGrade = 4) {
-  return [4, 5, 6]
-    .map((grade) => `<option value="${grade}" ${Number(selectedGrade) === grade ? "selected" : ""}>Grade ${grade}</option>`)
+  return GRADE_LEVELS
+    .map((grade) => `<option value="${grade}" ${normalizeGrade(selectedGrade) === grade ? "selected" : ""}>${gradeLabel(grade)}</option>`)
     .join("");
 }
 
@@ -458,6 +652,42 @@ function termOptions(selectedTerm = 1) {
   return [1, 2, 3]
     .map((term) => `<option value="${term}" ${Number(selectedTerm) === term ? "selected" : ""}>Term ${term}</option>`)
     .join("");
+}
+
+function specificCurriculumEditor(user) {
+  if (!user) return "";
+  const selected = new Set(validSpecificTopics(user));
+  const checks = getGradeTopics(user.grade)
+    .map(
+      (topic) => `
+        <label class="curriculum-check">
+          <input type="checkbox" name="specificTopics" value="${escapeHtml(topic)}" ${selected.has(topic) ? "checked" : ""} />
+          <span><strong>${escapeHtml(topicLabel(topic))}</strong><small>${selected.has(topic) ? "Included now" : "Add to question mix"}</small></span>
+        </label>
+      `
+    )
+    .join("");
+  const mode = selected.size ? `${selected.size} custom topics` : `Following Term ${user.term}`;
+  return `
+    <section class="admin-card specific-curriculum-editor" aria-labelledby="specificCurriculumTitle">
+      <div class="specific-curriculum-heading">
+        <div>
+          <span class="status-pill">${escapeHtml(mode)}</span>
+          <h3 id="specificCurriculumTitle">Specific curriculum for ${escapeHtml(user.name)}</h3>
+          <p>${gradeLabel(user.grade)} topics are shown below. Checked topics replace the normal term mix for this learner.</p>
+        </div>
+        <button class="secondary-button" id="closeCurriculumEditor" type="button">Close</button>
+      </div>
+      <form id="specificCurriculumForm" data-user-id="${escapeHtml(user.id)}">
+        <div class="curriculum-check-grid">${checks}</div>
+        <p class="form-message" id="curriculumMessage"></p>
+        <div class="specific-curriculum-actions">
+          <button class="primary-admin-button" type="submit">Save selected topics</button>
+          <button class="secondary-button" id="useTermCurriculum" type="button">Use Term ${user.term} plan</button>
+        </div>
+      </form>
+    </section>
+  `;
 }
 
 function renderPeopleAdmin() {
@@ -483,6 +713,9 @@ function renderPeopleAdmin() {
           <select class="admin-select person-setting" data-field="roleId" aria-label="Role for ${escapeHtml(user.name)}" ${can("assignRoles") && !protectedAdmin ? "" : "disabled"}>
             ${roleOptions(user.roleId)}
           </select>
+          <button class="curriculum-button open-curriculum-editor" type="button" aria-label="Specific curriculum for ${escapeHtml(user.name)}" ${can("changeCurriculum") ? "" : "disabled"}>
+            ${validSpecificTopics(user).length ? `${validSpecificTopics(user).length} topics` : "Term plan"}
+          </button>
         </article>
       `;
     })
@@ -521,6 +754,7 @@ function renderPeopleAdmin() {
         <div class="people-list">${people}</div>
       </section>
     </div>
+    ${specificCurriculumEditor(classroomData.users.find((user) => user.id === editingCurriculumUserId))}
   `;
 
   const accountForm = document.querySelector("#accountForm");
@@ -544,6 +778,7 @@ function renderPeopleAdmin() {
       roleId: can("assignRoles") ? String(form.get("roleId") || "student") : "student",
       grade: can("changeGrade") ? Number(form.get("grade") || 4) : 4,
       term: can("changeTerm") ? Number(form.get("term") || 1) : 1,
+      specificTopics: [],
       groupId: can("manageGroups") ? String(form.get("groupId") || "") : "",
       createdAt: new Date().toISOString(),
     };
@@ -561,15 +796,66 @@ function renderPeopleAdmin() {
       if (!user) return;
       const field = select.dataset.field;
       user[field] = field === "grade" || field === "term" ? Number(select.value) : select.value;
+      if (field === "grade") user.specificTopics = [];
       saveClassroomData();
       if (currentUser?.id === user.id) {
         currentUser = user;
-        state.grade = Number(user.grade);
+        state.grade = normalizeGrade(user.grade);
         state.term = Number(user.term);
         saveState();
         applyCurrentUser();
       }
     });
+  });
+
+  document.querySelectorAll(".open-curriculum-editor").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!can("changeCurriculum")) return;
+      editingCurriculumUserId = button.closest("[data-person-id]").dataset.personId;
+      renderPeopleAdmin();
+      document.querySelector("#specificCurriculumTitle")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  document.querySelector("#closeCurriculumEditor")?.addEventListener("click", () => {
+    editingCurriculumUserId = null;
+    renderPeopleAdmin();
+  });
+
+  document.querySelector("#specificCurriculumForm")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!can("changeCurriculum")) return;
+    const user = classroomData.users.find((candidate) => candidate.id === event.currentTarget.dataset.userId);
+    const selectedTopics = new FormData(event.currentTarget).getAll("specificTopics").map(String);
+    const message = document.querySelector("#curriculumMessage");
+    if (!user || selectedTopics.length === 0) {
+      message.textContent = "Choose at least one topic, or use the term plan button.";
+      message.style.color = "#b91c1c";
+      return;
+    }
+    user.specificTopics = selectedTopics.filter((topic) => getGradeTopics(user.grade).includes(topic));
+    saveClassroomData();
+    if (currentUser?.id === user.id) {
+      currentUser = user;
+      nextQuestion();
+      updateUI();
+    }
+    renderPeopleAdmin();
+  });
+
+  document.querySelector("#useTermCurriculum")?.addEventListener("click", (event) => {
+    if (!can("changeCurriculum")) return;
+    const form = event.currentTarget.closest("form");
+    const user = classroomData.users.find((candidate) => candidate.id === form.dataset.userId);
+    if (!user) return;
+    user.specificTopics = [];
+    saveClassroomData();
+    if (currentUser?.id === user.id) {
+      currentUser = user;
+      nextQuestion();
+      updateUI();
+    }
+    renderPeopleAdmin();
   });
 }
 
@@ -672,7 +958,7 @@ function renderRolesAdmin() {
 }
 
 function renderCurriculumAdmin() {
-  const gradeCards = [4, 5, 6]
+  const gradeCards = GRADE_LEVELS
     .map((grade) => {
       const terms = [1, 2, 3]
         .map((term) => {
@@ -680,19 +966,19 @@ function renderCurriculumAdmin() {
           return `<div class="curriculum-term"><strong>Term ${term} · ${escapeHtml(curriculum.title)}</strong><span>${escapeHtml(curriculum.summary)}</span></div>`;
         })
         .join("");
-      return `<article class="curriculum-card"><h4>Grade ${grade}</h4>${terms}</article>`;
+      return `<article class="curriculum-card"><h4>${gradeLabel(grade)}</h4>${terms}</article>`;
     })
     .join("");
 
   elements.adminContent.innerHTML = `
-    <div class="admin-section-heading"><div><h3>BC curriculum map</h3><p>The question engine selects only topics assigned to the learner's grade and term.</p></div><span class="status-pill">Grades 4–6</span></div>
+    <div class="admin-section-heading"><div><h3>BC curriculum map</h3><p>The question engine follows the learner's grade and term unless a specific topic checklist is assigned.</p></div><span class="status-pill">K–Grade 8</span></div>
     <div class="curriculum-overview">${gradeCards}</div>
   `;
 }
 
 function renderAdmin() {
   const tabAccess = {
-    people: can("managePeople") || can("changeGrade") || can("changeTerm") || can("assignRoles"),
+    people: can("managePeople") || can("changeGrade") || can("changeTerm") || can("changeCurriculum") || can("assignRoles"),
     groups: can("manageGroups"),
     roles: can("manageRoles") || can("assignRoles"),
     curriculum: can("viewCurriculum") || can("changeGrade") || can("changeTerm"),
@@ -754,12 +1040,72 @@ function buildAnswers(answer, spread = 8, formatter = (value) => String(value)) 
   }));
 }
 
+function buildSignedAnswers(answer, spread = 8, formatter = (value) => String(value)) {
+  const wrong = new Set();
+  while (wrong.size < 3) {
+    const value = answer + randomInt(1, spread) * pick([-1, 1]);
+    if (value !== answer) wrong.add(value);
+  }
+  return shuffle([answer, ...wrong]).map((value) => ({ value, label: formatter(value) }));
+}
+
 function createCurriculumQuestion(grade = state.grade, term = state.term) {
+  grade = normalizeGrade(grade);
   const curriculum = curriculumMap[grade]?.[term] || curriculumMap[4][1];
-  const topic = pick(curriculum.topics);
+  const customTopics = currentUser?.grade === grade ? validSpecificTopics(currentUser) : [];
+  const topic = pick(customTopics.length ? customTopics : curriculum.topics);
+
+  if (topic === "counting") {
+    const count = randomInt(1, grade === 0 ? 10 : 20);
+    return question(
+      "Counting",
+      `How many stars are here? ${"★ ".repeat(count).trim()}`,
+      count,
+      buildAnswers(count, 4),
+      "counting",
+      true
+    );
+  }
+
+  if (topic === "numberCompare") {
+    const max = grade === 0 ? 10 : grade === 1 ? 20 : 100;
+    const choices = new Set();
+    while (choices.size < 4) choices.add(randomInt(1, max));
+    const values = [...choices];
+    const answer = Math.max(...values);
+    return question(
+      "Compare Numbers",
+      "Which number is greatest?",
+      answer,
+      shuffle(values).map((value) => ({ value, label: String(value) })),
+      "comparing"
+    );
+  }
+
+  if (topic === "skipCounting") {
+    const step = pick([2, 5, 10]);
+    const start = randomInt(0, 4) * step;
+    const answer = start + step * 4;
+    return question(
+      "Skip Counting",
+      `${start}, ${start + step}, ${start + step * 2}, ${start + step * 3}, ___`,
+      answer,
+      buildAnswers(answer, step + 3),
+      "patterns"
+    );
+  }
 
   if (topic === "placeValue") {
-    const places = grade === 4 ? [10, 100, 1000] : grade === 5 ? [100, 1000, 10000, 100000] : [1000, 10000, 1000000];
+    const places =
+      grade <= 2
+        ? [10]
+        : grade === 3
+          ? [10, 100]
+          : grade === 4
+            ? [10, 100, 1000]
+            : grade === 5
+              ? [100, 1000, 10000, 100000]
+              : [1000, 10000, 1000000];
     const place = pick(places);
     const digit = randomInt(2, 9);
     const number = digit * place + randomInt(1, Math.max(9, place - 1));
@@ -777,9 +1123,26 @@ function createCurriculumQuestion(grade = state.grade, term = state.term) {
   }
 
   if (topic === "addition" || topic === "subtraction") {
-    const max = grade === 4 ? 9000 : grade === 5 ? 90000 : 900000;
-    const a = randomInt(Math.floor(max * 0.15), max);
-    const b = randomInt(Math.floor(max * 0.05), Math.floor(max * 0.45));
+    if (grade === 0) {
+      const total = randomInt(3, 10);
+      const part = randomInt(1, total - 1);
+      const answer = topic === "addition" ? total : total - part;
+      const prompt = topic === "addition" ? `${part} + ${total - part} = ?` : `${total} − ${part} = ?`;
+      return question(
+        topic === "addition" ? "Make a Number" : "Take Away",
+        prompt,
+        answer,
+        buildAnswers(answer, 3),
+        "addition"
+      );
+    }
+    const max = grade === 0 ? 10 : grade === 1 ? 20 : grade === 2 ? 100 : grade === 3 ? 1000 : grade === 4 ? 9000 : grade === 5 ? 90000 : 900000;
+    const a = topic === "addition"
+      ? randomInt(1, max - 1)
+      : randomInt(Math.max(1, Math.floor(max * 0.15)), max);
+    const b = topic === "addition"
+      ? randomInt(1, max - a)
+      : randomInt(1, Math.max(2, Math.floor(max * 0.45)));
     const high = Math.max(a, b);
     const low = Math.min(a, b);
     const answer = topic === "addition" ? a + b : high - low;
@@ -788,21 +1151,21 @@ function createCurriculumQuestion(grade = state.grade, term = state.term) {
       topic === "addition" ? "Addition" : "Subtraction",
       prompt,
       answer,
-      buildAnswers(answer, grade === 4 ? 90 : 900, (value) => value.toLocaleString()),
+      buildAnswers(answer, grade <= 1 ? 5 : grade === 2 ? 15 : grade === 3 ? 60 : grade === 4 ? 90 : 900, (value) => value.toLocaleString()),
       "addition"
     );
   }
 
   if (topic === "multiplication") {
-    const a = grade === 4 ? randomInt(12, 99) : grade === 5 ? randomInt(25, 299) : randomInt(35, 499);
-    const b = grade === 4 ? randomInt(2, 9) : grade === 5 ? randomInt(3, 12) : randomInt(4, 15);
+    const a = grade === 3 ? randomInt(2, 10) : grade === 4 ? randomInt(12, 99) : grade === 5 ? randomInt(25, 299) : grade === 7 ? randomInt(2, 12) : randomInt(35, 499);
+    const b = grade === 3 ? randomInt(2, 5) : grade === 4 ? randomInt(2, 9) : grade === 5 ? randomInt(3, 12) : grade === 7 ? randomInt(2, 12) : randomInt(4, 15);
     const answer = a * b;
     return question("Multiplication", `${a} × ${b} = ?`, answer, buildAnswers(answer, Math.max(12, b * 4)), "multiplication");
   }
 
   if (topic === "division") {
-    const divisor = grade === 4 ? randomInt(2, 9) : grade === 5 ? randomInt(3, 12) : randomInt(4, 15);
-    const answer = grade === 4 ? randomInt(12, 80) : grade === 5 ? randomInt(20, 160) : randomInt(25, 220);
+    const divisor = grade === 3 ? randomInt(2, 5) : grade === 4 ? randomInt(2, 9) : grade === 5 ? randomInt(3, 12) : grade === 7 ? randomInt(2, 12) : randomInt(4, 15);
+    const answer = grade === 3 ? randomInt(2, 10) : grade === 4 ? randomInt(12, 80) : grade === 5 ? randomInt(20, 160) : grade === 7 ? randomInt(2, 12) : randomInt(25, 220);
     if (grade === 5 && Math.random() < 0.5) {
       const remainder = randomInt(1, divisor - 1);
       const dividend = divisor * answer + remainder;
@@ -832,7 +1195,25 @@ function createCurriculumQuestion(grade = state.grade, term = state.term) {
   }
 
   if (topic === "fractions") {
-    if (grade === 6) {
+    if (grade === 3) {
+      const denominator = pick([2, 3, 4, 6, 8]);
+      const numerator = randomInt(1, denominator - 1);
+      const labels = [
+        `${numerator}/${denominator}`,
+        `${denominator}/${numerator}`,
+        `${Math.min(denominator - 1, numerator + 1)}/${denominator}`,
+        `${numerator}/${denominator + 1}`,
+      ];
+      return question(
+        "Fraction Concepts",
+        `${numerator} of ${denominator} equal parts are shaded. Which fraction is that?`,
+        0,
+        shuffle(labels.map((label, index) => ({ value: index, label }))),
+        "fractions",
+        true
+      );
+    }
+    if (grade >= 6) {
       const denominator = pick([3, 4, 5, 6]);
       const whole = randomInt(1, 4);
       const numerator = randomInt(1, denominator - 1);
@@ -867,7 +1248,7 @@ function createCurriculumQuestion(grade = state.grade, term = state.term) {
   if (topic === "decimals") {
     const scale = grade === 4 ? 100 : 1000;
     const digits = grade === 4 ? 2 : 3;
-    if (grade === 6) {
+    if (grade >= 6) {
       const decimalPlaces = 2;
       const operation = pick(["multiply", "divide"]);
       const whole = randomInt(2, 9);
@@ -905,6 +1286,25 @@ function createCurriculumQuestion(grade = state.grade, term = state.term) {
   }
 
   if (topic === "patterns") {
+    if (grade <= 1) {
+      const patterns = [
+        ["●", "▲", "●", "▲", "●", "▲"],
+        ["★", "★", "○", "★", "★", "○"],
+        ["■", "●", "▲", "■", "●", "▲"],
+      ];
+      const sequence = pick(patterns);
+      const answerLabel = sequence[sequence.length - 1];
+      const choices = shuffle(["●", "▲", "★", "○", "■"].filter((value, index, all) => all.indexOf(value) === index)).slice(0, 3);
+      if (!choices.includes(answerLabel)) choices[0] = answerLabel;
+      const unique = Array.from(new Set([answerLabel, ...choices])).slice(0, 4);
+      return question(
+        "Repeating Patterns",
+        `${sequence.slice(0, -1).join("  ")}  ___`,
+        0,
+        shuffle(unique.map((label, index) => ({ value: label === answerLabel ? 0 : index + 1, label }))),
+        "patterns"
+      );
+    }
     const start = randomInt(2, 25);
     const step = randomInt(3, grade === 6 ? 15 : 9);
     const sequence = [start, start + step, start + step * 2, start + step * 3];
@@ -913,9 +1313,88 @@ function createCurriculumQuestion(grade = state.grade, term = state.term) {
   }
 
   if (topic === "equations") {
+    if (grade >= 7) {
+      const answer = randomInt(2, 15);
+      const multiplier = randomInt(2, 6);
+      const add = randomInt(2, 12);
+      return question(
+        "Two-Step Equations",
+        `${multiplier}x + ${add} = ${multiplier * answer + add}. What is x?`,
+        answer,
+        buildAnswers(answer, 6),
+        "equations"
+      );
+    }
     const answer = randomInt(4, grade === 6 ? 60 : 35);
     const add = randomInt(3, 25);
     return question("One-Step Equations", `x + ${add} = ${answer + add}. What is x?`, answer, buildAnswers(answer, 8), "equations");
+  }
+
+  if (topic === "measurement") {
+    if (grade <= 1) {
+      const ribbon = randomInt(6, 10);
+      const pencil = randomInt(2, 5);
+      const labels = ["The ribbon", "The pencil", "They are equal", "We cannot tell"];
+      return question(
+        "Measurement",
+        `A ribbon is ${ribbon} cubes long. A pencil is ${pencil} cubes long. Which is longer?`,
+        0,
+        labels.map((label, index) => ({ value: index, label })),
+        "measurement",
+        true
+      );
+    }
+    const metres = randomInt(2, grade === 2 ? 6 : 15);
+    return question(
+      "Metric Measurement",
+      `${metres} metres equals how many centimetres?`,
+      metres * 100,
+      buildAnswers(metres * 100, 180, (value) => `${value} cm`),
+      "measurement"
+    );
+  }
+
+  if (topic === "shapes") {
+    const shape = pick([
+      { name: "triangle", sides: 3 },
+      { name: "square", sides: 4 },
+      { name: "pentagon", sides: 5 },
+      { name: "hexagon", sides: 6 },
+    ]);
+    return question(
+      "Shapes & Geometry",
+      `How many sides does a ${shape.name} have?`,
+      shape.sides,
+      buildAnswers(shape.sides, 3),
+      "shapes"
+    );
+  }
+
+  if (topic === "graphs") {
+    if (grade >= 7) {
+      const total = pick([80, 120, 160, 200]);
+      const percent = pick([20, 25, 40, 50]);
+      const answer = (total * percent) / 100;
+      return question(
+        "Circle Graphs",
+        `A circle graph shows ${percent}% of ${total} students chose racing games. How many students is that?`,
+        answer,
+        buildAnswers(answer, 18),
+        "graphs",
+        true
+      );
+    }
+    const cats = randomInt(2, 8);
+    const dogs = cats + randomInt(1, 5);
+    const answer = dogs - cats;
+    return question(
+      "Graphs & Data",
+      `A picture graph shows ${cats} votes for cats and ${dogs} votes for dogs. How many more votes did dogs get?`,
+      answer,
+      buildAnswers(answer, 4),
+      "graphs",
+      true
+    );
   }
 
   if (topic === "time") {
@@ -982,6 +1461,30 @@ function createCurriculumQuestion(grade = state.grade, term = state.term) {
   }
 
   if (topic === "probability") {
+    if (grade <= 3) {
+      const red = randomInt(4, 8);
+      const blue = randomInt(1, 3);
+      const labels = ["Red", "Blue", "Equally likely", "Impossible to know"];
+      return question(
+        "Chance & Likelihood",
+        `A bag has ${red} red counters and ${blue} blue counters. Which colour is more likely to be picked?`,
+        0,
+        labels.map((label, index) => ({ value: index, label })),
+        "probability",
+        true
+      );
+    }
+    if (grade >= 7) {
+      const labels = ["1/12", "1/8", "1/6", "1/2"];
+      return question(
+        "Two Independent Events",
+        "What is the probability of flipping heads and then rolling a 6 on a fair die?",
+        0,
+        labels.map((label, index) => ({ value: index, label })),
+        "probability",
+        true
+      );
+    }
     const sides = pick([4, 6, 8, 10]);
     const favourable = randomInt(1, Math.max(1, Math.floor(sides / 2)));
     const answer = favourable;
@@ -996,6 +1499,70 @@ function createCurriculumQuestion(grade = state.grade, term = state.term) {
   }
 
   if (topic === "money") {
+    if (grade <= 1) {
+      const coin = pick([
+        { name: "nickel", value: 5 },
+        { name: "dime", value: 10 },
+        { name: "quarter", value: 25 },
+        { name: "loonie", value: 100 },
+      ]);
+      return question(
+        "Canadian Coins",
+        `How many cents is a ${coin.name} worth?`,
+        coin.value,
+        shuffle([5, 10, 25, 100].map((value) => ({ value, label: `${value}¢` }))),
+        "money"
+      );
+    }
+    if (grade === 2) {
+      const quarters = randomInt(1, 3);
+      const dimes = randomInt(1, 4);
+      const answer = quarters * 25 + dimes * 10;
+      return question(
+        "Coin Combinations",
+        `${quarters} quarter${quarters === 1 ? "" : "s"} and ${dimes} dime${dimes === 1 ? "" : "s"} are worth how much?`,
+        answer,
+        buildAnswers(answer, 25, (value) => `${value}¢`),
+        "money",
+        true
+      );
+    }
+    if (grade === 8) {
+      const smallCount = 4;
+      const largeCount = 10;
+      const smallPrice = randomInt(8, 14);
+      const largePrice = smallPrice * 2 + randomInt(1, 5);
+      const smallUnit = smallPrice / smallCount;
+      const largeUnit = largePrice / largeCount;
+      const answer = Math.abs(smallUnit - largeUnit) < 0.001 ? 2 : smallUnit < largeUnit ? 0 : 1;
+      const labels = [
+        `The ${smallCount}-pack at $${smallPrice}`,
+        `The ${largeCount}-pack at $${largePrice}`,
+        "They cost the same per item",
+        "There is not enough information",
+      ];
+      return question(
+        "Best Buys",
+        "Which package has the lower unit price?",
+        answer,
+        labels.map((label, index) => ({ value: index, label })),
+        "money",
+        true
+      );
+    }
+    if (grade === 7) {
+      const original = pick([40, 60, 80, 120]);
+      const discount = pick([10, 20, 25, 50]);
+      const answer = original - (original * discount) / 100;
+      return question(
+        "Percent Discounts",
+        `A $${original} item is ${discount}% off. What is the sale price?`,
+        answer,
+        buildAnswers(answer, 15, (value) => `$${value}`),
+        "money",
+        true
+      );
+    }
     const cost = randomInt(8, grade === 4 ? 65 : 180);
     const paid = Math.ceil((cost + randomInt(8, 45)) / 10) * 10;
     const answer = paid - cost;
@@ -1045,7 +1612,7 @@ function createCurriculumQuestion(grade = state.grade, term = state.term) {
   }
 
   if (topic === "percents") {
-    const percent = pick([10, 20, 25, 50, 75]);
+    const percent = grade === 8 ? pick([0.5, 125, 150, 175]) : pick([10, 20, 25, 50, 75]);
     const total = pick([40, 60, 80, 100, 120, 160, 200]);
     const answer = (percent * total) / 100;
     return question(
@@ -1054,6 +1621,131 @@ function createCurriculumQuestion(grade = state.grade, term = state.term) {
       answer,
       buildAnswers(answer, Math.max(8, total / 10)),
       "percent"
+    );
+  }
+
+  if (topic === "integers") {
+    const a = randomInt(-15, 15);
+    const b = randomInt(-12, 12);
+    const operation = pick(["add", "subtract"]);
+    const answer = operation === "add" ? a + b : a - b;
+    const symbol = operation === "add" ? "+" : "−";
+    const bLabel = b < 0 ? `(${b})` : String(b);
+    return question(
+      "Integer Operations",
+      `${a} ${symbol} ${bLabel} = ?`,
+      answer,
+      buildSignedAnswers(answer, 8),
+      "integers"
+    );
+  }
+
+  if (topic === "linearRelations") {
+    const slope = randomInt(2, 6);
+    const intercept = randomInt(-5, 8);
+    const x = randomInt(2, 9);
+    const answer = slope * x + intercept;
+    const sign = intercept < 0 ? `− ${Math.abs(intercept)}` : `+ ${intercept}`;
+    return question(
+      "Linear Relations",
+      `If y = ${slope}x ${sign}, what is y when x = ${x}?`,
+      answer,
+      buildSignedAnswers(answer, 10),
+      "linear"
+    );
+  }
+
+  if (topic === "circles") {
+    const radius = randomInt(2, 10);
+    const answer = Math.round(2 * 3.14 * radius * 100);
+    return question(
+      "Circumference",
+      `Using π ≈ 3.14, what is the circumference of a circle with radius ${radius} cm?`,
+      answer,
+      buildAnswers(answer, 80, (value) => `${(value / 100).toFixed(2)} cm`),
+      "geometry",
+      true
+    );
+  }
+
+  if (topic === "coordinates") {
+    const x = pick([-1, 1]) * randomInt(1, 8);
+    const y = pick([-1, 1]) * randomInt(1, 8);
+    const answer = x > 0 && y > 0 ? 1 : x < 0 && y > 0 ? 2 : x < 0 ? 3 : 4;
+    return question(
+      "Cartesian Coordinates",
+      `Which quadrant contains the point (${x}, ${y})?`,
+      answer,
+      [1, 2, 3, 4].map((value) => ({ value, label: `Quadrant ${value}` })),
+      "geometry"
+    );
+  }
+
+  if (topic === "squaresRoots") {
+    const base = randomInt(2, 12);
+    const useCube = Math.random() < 0.35;
+    const value = useCube ? base ** 3 : base ** 2;
+    return question(
+      useCube ? "Cube Roots" : "Square Roots",
+      `What is the ${useCube ? "cube" : "square"} root of ${value}?`,
+      base,
+      buildAnswers(base, 5),
+      "roots"
+    );
+  }
+
+  if (topic === "fractionOperations") {
+    const denominator = pick([3, 4, 5, 6, 8]);
+    const a = randomInt(1, denominator - 1);
+    const b = randomInt(1, denominator - 1);
+    const answer = a + b;
+    return question(
+      "Fraction Operations",
+      `${a}/${denominator} + ${b}/${denominator} = ?`,
+      answer,
+      buildAnswers(answer, 3, (value) => `${value}/${denominator}`),
+      "fractions"
+    );
+  }
+
+  if (topic === "surfaceArea") {
+    const length = randomInt(3, 9);
+    const width = randomInt(2, 7);
+    const height = randomInt(2, 6);
+    const answer = 2 * (length * width + length * height + width * height);
+    return question(
+      "Surface Area",
+      `What is the surface area of a ${length} cm × ${width} cm × ${height} cm rectangular prism?`,
+      answer,
+      buildAnswers(answer, 30, (value) => `${value} cm²`),
+      "geometry",
+      true
+    );
+  }
+
+  if (topic === "pythagorean") {
+    const triple = pick([[3, 4, 5], [5, 12, 13], [6, 8, 10], [8, 15, 17]]);
+    const answer = triple[2];
+    return question(
+      "Pythagorean Theorem",
+      `A right triangle has legs ${triple[0]} cm and ${triple[1]} cm. What is the hypotenuse?`,
+      answer,
+      buildAnswers(answer, 6, (value) => `${value} cm`),
+      "pythagorean",
+      true
+    );
+  }
+
+  if (topic === "centralTendency") {
+    const middle = randomInt(4, 15);
+    const values = [middle - 3, middle, middle, middle + 2, middle + 5];
+    const ask = pick(["median", "mode"]);
+    return question(
+      "Mean, Median & Mode",
+      `What is the ${ask} of ${values.join(", ")}?`,
+      middle,
+      buildAnswers(middle, 5),
+      "data"
     );
   }
 
@@ -1253,7 +1945,7 @@ function nextQuestion() {
   elements.nextButton.hidden = true;
 
   currentQuestion = createCurriculumQuestion(Number(state.grade), Number(state.term));
-  currentQuestion.reward = 10 + Math.min(session.streak, 5) * 2 + (state.grade - 4) * 2;
+  currentQuestion.reward = 10 + Math.min(session.streak, 5) * 2 + Math.max(0, Number(state.grade) - 4) * 2;
 
   elements.topicLabel.textContent = currentQuestion.topic;
   elements.questionPrompt.textContent = currentQuestion.prompt;
@@ -1339,8 +2031,13 @@ function updateUI() {
   elements.gradeSelect.value = String(state.grade);
   elements.termSelect.value = String(state.term);
   const curriculum = curriculumMap[state.grade]?.[state.term] || curriculumMap[4][1];
-  elements.curriculumTitle.textContent = `Grade ${state.grade} · Term ${state.term} · ${curriculum.title}`;
-  elements.curriculumTopics.textContent = curriculum.summary;
+  const customTopics = currentUser ? validSpecificTopics(currentUser) : [];
+  elements.curriculumTitle.textContent = customTopics.length
+    ? `${gradeLabel(state.grade)} · Term ${state.term} · Custom Focus`
+    : `${gradeLabel(state.grade)} · Term ${state.term} · ${curriculum.title}`;
+  elements.curriculumTopics.textContent = customTopics.length
+    ? customTopics.map(topicLabel).join(" · ")
+    : curriculum.summary;
   elements.soundIcon.textContent = state.sound ? "♪" : "×";
   elements.soundButton.setAttribute("aria-label", state.sound ? "Turn sound off" : "Turn sound on");
   applyCharacterStyle();
@@ -1520,8 +2217,9 @@ elements.gradeSelect.addEventListener("change", (event) => {
     event.target.value = String(state.grade);
     return;
   }
-  state.grade = Number(event.target.value);
+  state.grade = normalizeGrade(event.target.value);
   updateCurrentUserProfile("grade", state.grade);
+  updateCurrentUserProfile("specificTopics", []);
   session.streak = 0;
   saveState();
   updateUI();
